@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
   res.json("시작");
 });
 
-app.get("/info", (req, res) => {
+app.get("/user", (req, res) => {
   connection.query("SELECT * from testdb", (error, rows) => {
     if (error) throw error;
     res.send(rows);
