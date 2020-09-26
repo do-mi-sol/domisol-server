@@ -1,26 +1,21 @@
 const express = require("express");
+const app = express();
 
 //db 생성 및 연결
 const mysql = require("mysql");
 const db_config = require("./config/database/db_config");
 const connection = mysql.createConnection(db_config);
 
-const app = express();
-
+//미들웨어 등록
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.json("시작");
-});
+const indexRouter = require("./routes/index");
+app.use("/", indexRouter);
+const userRouter = require("./routes/user");
+app.use("/user", userRouter);
 
-app.get("/user", (req, res) => {
-  connection.query("SELECT * from testdb", (error, rows) => {
-    if (error) throw error;
-    res.send(rows);
-  });
-});
-
-app.listen("9001", () => {
-  console.log("http://localhost:9001/");
+//서버 실행
+app.listen(3001, () => {
+  console.log("도미솔 웹 서버 " + "::" + " http://localhost:3001/");
 });
