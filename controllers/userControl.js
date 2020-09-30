@@ -1,46 +1,36 @@
-const express = require("express");
-const { createConnection } = require("mysql");
+const { json } = require("body-parser")
+const express = require("express")
+
+//DB connect
+const db = require("../config/database/db_config")
 
 module.exports = {
-  login: (res, req, next) => {
-    const { id, name, password, email, age } = req.body;
-    if (id == null || password == null)
-      return onmessageerror("error", res, req);
+    login: (req, res, next) => {},
+    signup: (req, res, next) => {
+        // 데이터 들어왔는지 확인
+        // console.log(req.body)
+        var users = {
+            user_id: req.body.user_id,
+            name: req.body.name,
+            password: req.body.password,
+            email: req.body.email,
+            age: req.body.age,
+        }
 
-    try {
-    } catch {}
-  },
+        // const { id, name, password, email, age } = req.body;
 
-  signup: (res, req, next) => {
-    const users = {
-      user_id: req.body.user_id,
-      name: req.body.name,
-      password: req.body.password,
-      email: req.body.email,
-      age: req.body.age,
-    };
-
-    // const { id, name, password, email, age } = req.body;
-
-    createConnection.query("INSERT INTO users SET ?", users, function (
-      error,
-      results,
-      fields
-    ) {
-      if (error) {
-        console.log(error);
-        res.send({
-          code: 400,
-          result: "error",
-        });
-      } else {
-        console.log("solution :", results);
-        res.send({
-          code: 400,
-          result: "success",
-        });
-      }
-    });
-    next();
-  },
-};
+        var sql = `INSERT INTO users SET ?`
+        db.query(sql, users, function (error, result) {
+            if (error) {
+                return res.json({
+                    code: 200,
+                    success: false,
+                    error,
+                })
+            } else {
+                return res.status(200).json({ success: true })
+            }
+        })
+        next()
+    },
+}

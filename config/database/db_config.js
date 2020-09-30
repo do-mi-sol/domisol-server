@@ -1,3 +1,13 @@
+let mysql = require("mysql")
+let db = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "domisol!",
+    database: "domisol_test",
+})
+db.connect()
+module.exports = db
+
 // module.exports = {
 //   host: "localhost",
 //   user: "root",
@@ -5,9 +15,9 @@
 //   database: "testDB",
 // };
 
-module.exports = {
-    host: "localhost",
-    user: "root",
-    password: "domisol!",
-    database: "domisol_test",
-}
+// module.exports = {
+//     host: "localhost",
+//     user: "root",
+//     password: "domisol!",
+//     database: "domisol_test",
+// }

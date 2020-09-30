@@ -1,12 +1,11 @@
 const express = require("express")
 const router = express.Router()
 
-const mysql = require("mysql")
-const db_config = require("../config/database/db_config")
-const connection = mysql.createConnection(db_config)
+//DB connect
+const db = require("../config/database/db_config")
 
+//controller
 const controller = require("../controllers/userControl")
-router.use(connection)
 
 /**
  * @method POST
@@ -20,11 +19,14 @@ router.post("/login", (req, res) => {
  * @method POST
  * @summary SignUp
  */
-// router.post("/signup", (req, res) => {
+// router.post("/signup", (req, res, next) => {
 //     res.send("signup")
 // })
 
-router.post("/signup", controller.signup)
+// test controller
+router.post("/signup", controller.signup, (req, res, next) => {
+    return console.log("success")
+})
 
 /**
  * @method POST

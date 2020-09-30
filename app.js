@@ -1,14 +1,12 @@
 const express = require("express")
 const app = express()
-
+const bodyParser = require("body-parser")
 //DB connect
-const mysql = require("mysql")
-const db_config = require("./config/database/db_config")
-const connection = mysql.createConnection(db_config)
+const db = require("./config/database/db_config.js")
 
 //middleware
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }))
 
 //router
 const indexRouter = require("./routes/index")
