@@ -19,6 +19,9 @@ module.exports = {
       email: req.body.email,
       age: req.body.age,
     };
+
+    // const { id, name, password, email, age } = req.body;
+
     createConnection.query("INSERT INTO users SET ?", users, function (
       error,
       results,
