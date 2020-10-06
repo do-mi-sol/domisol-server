@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 
 //middleware
 app.use(express.json());
@@ -9,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
 const userRouter = require("./routes/user");
-app.use("/api/user", userRouter);
+app.use("/api/user", cors(), userRouter);
 
 //start the server
 app.listen(3001, () => {
