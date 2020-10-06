@@ -30,8 +30,9 @@ module.exports = {
                 })
             }
             const checkPw = () => {
-                // bcrypt.compare 콜백함수에서 res는 true or false를 반환해준다.
+                // bcrypt.compare 콜백함수에서 isMatch는 true or false를 반환해준다.
                 // 암호화된 패스워드 체크
+                // wntjrwntjrwntjr
                 bcrypt.compare(password, results[0].password, function (err, isMatch) {
                     if (err)
                         return res.status(400).json({
