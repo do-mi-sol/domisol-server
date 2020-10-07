@@ -1,8 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
-const format = require("mysql").format;
 
-const conn = require("../config/database/db_connect")().init();
+const pool = require("../config/database/db_connect");
 const SQL = require("../config/database/db_sql");
 
 const { errorMsg } = require("../utils/myMessage");
@@ -54,7 +53,7 @@ module.exports = {
     // });
   },
 
-  signup: (req, res, next) => {
+  signup: async (req, res, next) => {
     const { user_id, email, password, name, gender, age } = req.body;
     console.log(req.body);
     if (
@@ -68,12 +67,10 @@ module.exports = {
       return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
     }
     try {
-      conn.query(SQL.signup_SAVE, req.body, (err) => {
-        if (err) return errorMsg(res, 300, err.message);
-        next();
-      });
+      await pool.query(SQL.signup_SAVE, req.body);
     } catch (signupERR) {
       return errorMsg(res, 300, signupERR.message);
     }
+    next();
   },
 };
