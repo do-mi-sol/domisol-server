@@ -18,7 +18,7 @@ router.post("/login", login, (req, res, next) => {
  * @summary SignUp
  */
 router.post("/signup", signup, (req, res) => {
-  res.status(201).json(myResponse(true, "signup 성공"));
+  res.json(myResponse(true, "signup 성공"));
 });
 
 /**
