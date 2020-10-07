@@ -6,12 +6,13 @@ const conn = require("../config/database/db_connect")().init()
 
 //controller
 const { login, signup } = require("../controllers/userControl")
+const { signToken, verifyToken } = require("../controllers/tokenController")
 
 /**
  * @method POST
  * @summary Login
  */
-router.post("/login", login, (req, res, next) => {
+router.post("/login", login, signToken, (req, res, next) => {
     return console.log("success")
 })
 
@@ -70,5 +71,11 @@ router.post("/find/idfind", (req, res) => {
 router.post("/find/passwordfind", (req, res) => {
     res.send("passwordfind")
 })
+
+/**
+ * @method GET
+ * @summary TokenTest
+ */
+router.get("/test", verifyToken, (req, res) => {})
 
 module.exports = router

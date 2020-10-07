@@ -32,7 +32,6 @@ module.exports = {
             const checkPw = () => {
                 // bcrypt.compare 콜백함수에서 isMatch는 true or false를 반환해준다.
                 // 암호화된 패스워드 체크
-                // test_1
                 bcrypt.compare(password, results[0].password, function (err, isMatch) {
                     if (err)
                         return res.status(400).json({
@@ -40,16 +39,13 @@ module.exports = {
                             err,
                         })
                     if (isMatch) {
-                        console.log("아이디 패스워드가 일치합니다.")
-                        return res.status(200).json({
-                            seccess: true,
-                            message: "아이다와 패스워드가 일치합니다.",
-                        })
+                        next()
                     }
                 })
             }
             checkPw()
         })
+        next()
     },
 
     signup: (req, res, next) => {
@@ -102,3 +98,5 @@ module.exports = {
         next()
     },
 }
+
+//
