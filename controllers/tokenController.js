@@ -9,10 +9,17 @@ const YOUR_SECRET_KEY = process.env.SECRET_KEY
 module.exports = {
     // 생성된 오큰은 req.headers.authorization에 저장된다.
     signToken: async (req, res, next) => {
-        console.log(req.body)
-        const accessToken = await jwt.sign({ user_id: req.body.user_id }, YOUR_SECRET_KEY, { expiresIn: "10000" })
-        res.status(200).json({ success: true, message: "아이디와 패스워드가 일치합니다.", token: accessToken })
-        next()
+        try {
+            const accessToken = await jwt.sign({ user_id: req.body.user_id }, YOUR_SECRET_KEY, { expiresIn: "10000" })
+            res.status(200).json({ success: true, message: "아이디와 패스워드가 일치합니다.", token: accessToken })
+            next()
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: "로그인 과정에서 발생한 오류",
+                error: error.toString(),
+            })
+        }
     },
 
     verifyToken: async (req, res, next) => {

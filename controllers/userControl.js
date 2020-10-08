@@ -7,7 +7,6 @@ const bcrypt = require("bcrypt")
 const e = require("express")
 const jwt = require("jsonwebtoken")
 const YOUR_SECRET_KEY = process.env.SECRET_KEY
-
 const saltRounds = 10
 
 module.exports = {
@@ -49,6 +48,12 @@ module.exports = {
     },
 
     signup: (req, res, next) => {
+        var { user_id, name, password, email, age } = req.body
+        if (user_id == null || name == null || password == null || email == null || age == null) {
+            return res.status(202).json({
+                message: "채워지지않는정보존재",
+            })
+        }
         var users = {
             user_id: req.body.user_id,
             name: req.body.name,
@@ -65,9 +70,8 @@ module.exports = {
                 return res.status(400).json({ success: false, error })
             } else {
                 if (results[0]) {
-                    if (result[0].user_id === users.user_id) {
-                        console.log("이미 동일한 아이디가 존재합니다.")
-                        return res.status(202).json({
+                    if (results[0].user_id === users.user_id) {
+                        res.status(202).json({
                             seccess: false,
                             message: "이미 동일한 아이디가 존재합니다.",
                         })
