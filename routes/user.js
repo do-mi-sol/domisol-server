@@ -9,8 +9,9 @@ const myResponse = require("../utils/myResponse");
  * @method POST
  * @summary Login
  */
-router.post("/login", login, (req, res, next) => {
-  res.send("login");
+router.post("/login", login, (req, res) => {
+  res.json(myResponse(true, "login 성공"));
+
 });
 
 /**
@@ -26,7 +27,7 @@ router.post("/signup", signup, (req, res) => {
  * @summary Account
  */
 router.post("/account", (req, res) => {
-  res.send("account");
+  res.json(myResponse(true, "account 성공"));
 });
 
 /**
