@@ -8,7 +8,7 @@ const conn = require("../config/database/db_connect")().init()
 const { login, signup } = require("../controllers/userControl")
 const { signToken, verifyToken } = require("../controllers/tokenController")
 const { idModify, passwordModify } = require("../controllers/modifycontrollers/modifyController")
-
+const { encryption } = require("../controllers/crypto/cryptoController")
 /**
  * @method POST
  * @summary Login
