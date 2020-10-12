@@ -38,7 +38,7 @@ router.post("/account", (req, res) => {
  * @summary ID_Modify
  */
 router.put("/account/idmodify/:user_id", idModify, (req, res) => {
-    console.log("idModify middleware escape");
+    res.json(myResponse(true, "idModify 성공"));
 });
 
 /**
@@ -47,7 +47,7 @@ router.put("/account/idmodify/:user_id", idModify, (req, res) => {
  */
 
 router.put("/account/passwordmodify/:user_id", passwordModify, (req, res) => {
-    console.log("passwordModify middleware escape");
+    res.json(myResponse(true, "passwordModify 성공"));
 });
 
 /**
@@ -78,6 +78,16 @@ router.post("/find/passwordfind", (req, res) => {
  * @method GET
  * @summary TokenTest
  */
-router.get("/test", verifyToken, (req, res) => {});
+router.get("/veritytest", verifyToken, (req, res) => {
+    res.json(myResponse(true, "verifyToken 성공", "data", req.decoded));
+});
+
+/**
+ * @method GET
+ * @summary TokenTest
+ */
+router.get("/signtoken", signToken, (req, res) => {
+    res.json(myResponse(true, "signToken 성공", "token", res.locals.token));
+});
 
 module.exports = router;
