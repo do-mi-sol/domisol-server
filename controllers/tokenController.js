@@ -21,8 +21,6 @@ module.exports = {
     },
 
     verifyToken: async (req, res, next) => {
-        req.headers.authorization =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZG9taXNvbCIsImlhdCI6MTYwMjUwMTQyOCwiZXhwIjoxNjAyNTAxNDU4fQ.3D8U12fwfY_v4-I7u6OKjwNRXPkU-C0g1lZlKKtCBDE";
         var token = req.headers.authorization;
         console.log(token);
         try {
