@@ -1,6 +1,8 @@
+
 const mysql = require("mysql2/promise");
 
-const config = require("./db_config").local;
+const config = require("./db_config").local
+
 
 const pool = mysql.createPool({
   ...config,

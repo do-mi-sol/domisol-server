@@ -5,8 +5,11 @@ const { login, signup } = require("../controllers/userControl");
 
 const { signToken, verifyToken } = require("../controllers/tokenController")
 
-const myResponse = require("../utils/myResponse");
+const { idModify, passwordModify } = require("../controllers/modifycontrollers/modifyController")
+const { encryption } = require("../controllers/crypto/cryptoController")
 
+
+const myResponse = require("../utils/myResponse");
 
 /**
  * @method POST
@@ -37,17 +40,19 @@ router.post("/account", (req, res) => {
  * @method PUT
  * @summary ID_Modify
  */
-router.put("/account/idmodify", (req, res) => {
-  res.send("idmodify");
-});
+router.put("/account/idmodify/:user_id", idModify, (req, res) => {
+    console.log("idModify middleware escape")
+})
+
 
 /**
  * @method PUT
  * @summary PW_Modify
  */
-router.put("/account/passwordmodify", (req, res) => {
-  res.send("passwordmodify");
-});
+
+router.put("/account/passwordmodify/:user_id", passwordModify, (req, res) => {
+    console.log("passwordModify middleware escape")
+})
 
 /**
  * @method DELETE
