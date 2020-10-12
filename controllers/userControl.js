@@ -13,7 +13,6 @@ module.exports = {
     if (user_id == null || password == null) {
       return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
     }
-
     try {
       const data=await pool.query(SQL.SELECT_userid, user_id);
       console.log(data[0])
@@ -87,3 +86,4 @@ module.exports = {
 //   };
 //   checkPw();
 // });
+

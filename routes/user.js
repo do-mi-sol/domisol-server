@@ -3,7 +3,10 @@ const router = express.Router();
 
 const { login, signup } = require("../controllers/userControl");
 
+const { signToken, verifyToken } = require("../controllers/tokenController")
+
 const myResponse = require("../utils/myResponse");
+
 
 /**
  * @method POST
@@ -70,4 +73,10 @@ router.post("/find/passwordfind", (req, res) => {
   res.send("passwordfind");
 });
 
-module.exports = router;
+/**
+ * @method GET
+ * @summary TokenTest
+ */
+router.get("/test", verifyToken, (req, res) => {})
+
+module.exports = router
