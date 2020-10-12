@@ -1,6 +1,6 @@
 const express = require("express");
 
-const conn = require("../../config/database/db_connect")().init();
+const pool = require("../../config/database/db_connect");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 module.exports = {
@@ -9,7 +9,7 @@ module.exports = {
         var newUserId = req.body.user_id;
         var password = req.body.password;
         let search_sql = `SELECT * FROM users WHERE user_id =? AND password = ?`;
-        await conn.query(search_sql, [oldUserId, password], async (error, results) => {
+        await pool.query(search_sql, [oldUserId, password], async (error, results) => {
             if (error)
                 return res.status(400).json({
                     success: false,
@@ -23,7 +23,7 @@ module.exports = {
                         .json({ susccess: false, message: "아이디 수정 오류, 아이디를 찾을 수 없습니다." });
                 }
                 var update_sql = `UPDATE users SET user_id = ? WHERE user_id =? AND password = ?`;
-                await conn.query(update_sql, [newUserId, oldUserId, password], async (error, resultsUpdate) => {
+                await pool.query(update_sql, [newUserId, oldUserId, password], async (error, resultsUpdate) => {
                     if (error)
                         return res.status(400).json({
                             sueccess: false,
@@ -57,7 +57,7 @@ module.exports = {
         var oldPassword = req.body.password;
         var newPassword = req.body.new_password;
         let search_sql = `SELECT * FROM users WHERE user_id=? AND password=?`;
-        conn.query(search_sql, [userId, oldPassword], async (error, results) => {
+        pool.query(search_sql, [userId, oldPassword], async (error, results) => {
             if (error)
                 return res.status(400).json({
                     success: false,
@@ -71,7 +71,7 @@ module.exports = {
                         .json({ success: false, message: "비밀번호 수정 오류. 일치하는 데이터를 찾을 수 없습니다." });
                 }
                 var update_sql = `UPDATE users SET password =? WHERE user_id = ? AND password = ?`;
-                await conn.query(update_sql, [newPassword, userId, oldPassword], async (error, resultsUpdate) => {
+                await pool.query(update_sql, [newPassword, userId, oldPassword], async (error, resultsUpdate) => {
                     if (error)
                         return res.status(400).json({
                             success: false,
