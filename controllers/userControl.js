@@ -6,66 +6,55 @@ const SQL = require("../config/database/db_sql");
 
 const { errorMsg } = require("../utils/myMessage");
 
-const compare = async (userPassword,dbPassword)=>{
-  const c=bcrypt.compareSync(userPassword,dbPassword)
-  console.log("야야야야야야ㅑ야야야야"+c);
-  return c
-}
+const compare = async (userPassword, dbPassword) => {
+    const c = bcrypt.compareSync(userPassword, dbPassword);
+    console.log("야야야야야야ㅑ야야야야" + c);
+    return c;
+};
 
 module.exports = {
-  login: async (req, res, next) => {
-    const { user_id, password } = req.body;
+    login: async (req, res, next) => {
+        const { user_id, password } = req.body;
 
-    if (user_id == "" || password == "") {
-      return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
-    }
+        if (user_id == "" || password == "") {
+            return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
+        }
 
-    try {
-    const id_pw_Data=await pool.query(SQL.SELECT_userid,user_id);
-    console.log(password);
-    console.log(id_pw_Data[0]);
+        try {
+            const [id_pw_Data] = await pool.query(SQL.SELECT_userid, user_id);
 
-      if(id_pw_Data[0]==null){
-        return errorMsg(res, 400, "잘못된 id 또는 password입니다.")
-      }else{
-        if(compare(password, id_pw_Data[0].password)){
-          next()
-      }else return errorMsg(res,400,"password가 맞지않음")
-      }
-    } catch (loginERR) {
-      return errorMsg(res, 300, loginERR.message);
-    }
-  },
+            if (id_pw_Data[0] == null) {
+                return errorMsg(res, 400, "잘못된 id 또는 password입니다.");
+            } else {
+                if (compare(password, id_pw_Data[0].password)) {
+                    next();
+                } else return errorMsg(res, 400, "password가 맞지않음");
+            }
+        } catch (loginERR) {
+            return errorMsg(res, 300, loginERR.message);
+        }
+    },
 
+    signup: async (req, res, next) => {
+        const { user_id, email, password, name, gender, age } = req.body;
+        if (user_id == "" || email == "" || password == "" || name == "" || gender == "" || age == "") {
+            return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
+        }
 
-  signup: async (req, res, next) => {
-     const { user_id, email, password, name, gender, age } = req.body;
-    if (
-      user_id == "" ||
-      email == "" ||
-      password == "" ||
-      name == "" ||
-      gender == "" ||
-      age == ""
-    ) {
-      return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
-    }
+        try {
+            const idData = await pool.query(SQL.SELECT_userid, user_id);
+            const emailData = await pool.query(SQL.SELECT_email, email);
 
-    try {
-      const idData=await pool.query(SQL.SELECT_userid, user_id);
-      const emailData=await pool.query(SQL.SELECT_email, email);
-
-      if(!idData[0]||!emailData[0]) return errorMsg(res, 300, "존재하는 id 또는 email 입니다.")
-      else{
-        req.body.password=await bcrypt.hash(password,10)
-        await pool.query(SQL.INSERT_all, req.body);
-      }
-      
-    } catch (signupERR) {
-      return errorMsg(res, 300, signupERR.message);
-    }
-    next();
-  },
+            if (!idData[0] || !emailData[0]) return errorMsg(res, 300, "존재하는 id 또는 email 입니다.");
+            else {
+                req.body.password = await bcrypt.hash(password, 10);
+                await pool.query(SQL.INSERT_all, req.body);
+            }
+        } catch (signupERR) {
+            return errorMsg(res, 300, signupERR.message);
+        }
+        next();
+    },
 };
 
 // if (user_id == null && password == null) {
