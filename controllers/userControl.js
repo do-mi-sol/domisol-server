@@ -5,10 +5,6 @@ const SQL = require("../config/database/db_sql");
 
 const { errorMsg } = require("../utils/myMessage");
 
-const compare = async (userPassword, dbPassword) => {
-    return bcrypt.compareSync(userPassword, dbPassword);
-};
-
 module.exports = {
     login: async (req, res, next) => {
         const { user_id, password } = req.body;
@@ -18,12 +14,12 @@ module.exports = {
         }
 
         try {
-            const [id_pw_Data] = await pool.query(SQL.SELECT_userid, user_id);
+            const id_pw_Data = await pool.query(SQL.SELECT_userid, user_id);
 
             if (id_pw_Data[0] == null) {
                 return errorMsg(res, 400, "잘못된 id 또는 password입니다.");
             } else {
-                if (compare(password, id_pw_Data[0].password)) {
+                if (await bcrypt.compareSync(password, id_pw_Data[0][0].password)) {
                     next();
                 } else return errorMsg(res, 400, "password가 맞지않음");
             }

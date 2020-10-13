@@ -2,12 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 const { login, signup } = require("../controllers/userControl");
-
-const { signToken, verifyToken } = require("../controllers/tokenController");
-
-const { idModify, passwordModify } = require("../controllers/modifycontrollers/modifyController");
-
-const { idFind, passwordFind } = require("../controllers/findcontrollers/findController");
+const { signToken, verifyToken } = require("../controllers/tokenControl");
+const { idModify, passwordModify } = require("../controllers/modifyControl");
+const { idFind, passwordFind } = require("../controllers/findControl");
 
 const myResponse = require("../utils/myResponse");
 

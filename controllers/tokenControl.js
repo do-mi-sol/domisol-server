@@ -1,5 +1,3 @@
-const express = require("express");
-
 require("dotenv").config();
 
 const { errorMsg } = require("../utils/myMessage");
