@@ -48,4 +48,22 @@ module.exports = {
         }
         next();
     },
+    widthdrawal: async (req, res, next) => {
+        const { user_id, email, password } = req.body;
+        if (user_id == "" || email == "" || password == "") {
+            return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
+        }
+        try {
+            const { user_id, email, password } = req.body;
+            const [idData] = await pool.query(SQL.SELECT_userid, user_id);
+            const [emailData] = await pool.query(SQL.SELECT_email, email);
+            if (!idData[0] || !emailData[0]) return errorMsg(res, 300, "존재하는 id 또는 email 입니다.");
+            if (await bcrypt.compareSync(password, idData[0].password)) {
+                await pool.query(SQL.DELETE_userid, user_id);
+                next();
+            } else return errorMsg(res, 400, "password가 맞지않음");
+        } catch (widthdrawalERR) {
+            return errorMsg(res, 300, widthdrawalERR.message);
+        }
+    },
 };

@@ -8,6 +8,7 @@ const SELECT_name_email = "SELECT * FROM user WHERE name = ? AND email =?;";
 const SELECT_name_email_userid = "SELECT * FROM user WHERE name = ? AND email =? AND user_id = ?;";
 const UPDATE_userid = "UPDATE user SET user_id = ? WHERE user_id =? AND password = ?;";
 const UPDATE_userpassword = "UPDATE user SET password =? WHERE user_id = ? AND password = ?;";
+const DELETE_userid = "DELETE FROM user WHERE user_id = ?;";
 
 module.exports = {
     INSERT_all,
@@ -19,4 +20,5 @@ module.exports = {
     SELECT_name_email_userid,
     UPDATE_userid,
     UPDATE_userpassword,
+    DELETE_userid,
 };
