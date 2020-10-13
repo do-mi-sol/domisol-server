@@ -2,11 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const { login, signup, widthdrawal } = require("../controllers/userControl");
-
 const { signToken, verifyToken } = require("../controllers/tokenControl");
-
 const { idModify, passwordModify } = require("../controllers/modifycontrol");
-
 const { idFind, passwordFind } = require("../controllers/findcontrol");
 
 const myResponse = require("../utils/myResponse");
@@ -41,7 +38,7 @@ router.post("/account", (req, res) => {
  * @method PUT
  * @summary ID_Modify
  */
-router.put("/account/idmodify/:user_id", idModify, (req, res) => {
+router.put("/account/idmodify", idModify, (req, res) => {
     res.json(myResponse(true, "idModify 성공"));
 });
 
@@ -50,7 +47,7 @@ router.put("/account/idmodify/:user_id", idModify, (req, res) => {
  * @summary PW_Modify
  */
 
-router.put("/account/passwordmodify/:user_id", passwordModify, (req, res) => {
+router.put("/account/passwordmodify", passwordModify, (req, res) => {
     res.json(myResponse(true, "passwordModify 성공"));
 });
 
@@ -76,22 +73,6 @@ router.post("/find/idfind", idFind, (req, res) => {
  */
 router.post("/find/passwordfind", passwordFind, (req, res) => {
     res.json(myResponse(true, "passwordFInd 성공", "password", res.locals.password));
-});
-
-/**
- * @method GET
- * @summary TokenTest
- */
-router.get("/veritytest", verifyToken, (req, res) => {
-    res.json(myResponse(true, "verifyToken 성공", "data", req.decoded));
-});
-
-/**
- * @method GET
- * @summary TokenTest
- */
-router.get("/signtoken", signToken, (req, res) => {
-    res.json(myResponse(true, "signToken 성공", "token", res.locals.token));
 });
 
 module.exports = router;

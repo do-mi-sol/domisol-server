@@ -7,23 +7,24 @@ require("dotenv").config();
 
 module.exports = {
     idModify: async (req, res, next) => {
-        var oldUserId = req.params.user_id;
-        var newUserId = req.body.user_id;
-        var password = req.body.password;
-        try {
-            const search_data = await pool.query(SQL.SELECT_userid_password, [oldUserId, password]);
-            if (search_data[0].length === 0) {
-                return errorMsg(res, 300, "아이디 변경 실패. 입력하신 정보와 일치하는 아이디가 존재하지 않습니다.");
-            }
-            if (oldUserId === newUserId) {
-                return errorMsg(res, 202, "새로운 아이디와 기존 아이디가 동일합니다.");
-            }
+        const new_user_id = req.body.user_id
+        const user_id = req.user.user_id
 
-            // update sql = `UPDATE user SET user_id = ? WHERE user_id =? AND password = ?`
-            const update_data = await pool.query(SQL.UPDATE_userid, [newUserId, oldUserId, password]);
-            if (update_data[0].affectedRows === 0) {
-                return errorMsg(res, 202, "아이디 변경에 실패했습니다.");
-            }
+        if (new_user_id == "" ) {
+            return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
+        }
+
+        try {
+            const search_data = await pool.query(SQL.SELECT_userid, new_user_id);
+
+            if (search_data[0].length == 0) {
+                await pool.query(SQL.UPDATE_userid, [new_user_id, user_id]);
+                next()
+            } else return errorMsg(res, 202, "새로운 아이디와 기존 아이디가 동일합니다.");
+
+            // if (update_data[0].affectedRows == 0) {
+            //     return errorMsg(res, 202, "아이디 변경에 실패했습니다.");
+            // }
         } catch (idmodifyERR) {
             return errorMsg(res, 400, modifyERR.message);
         }
