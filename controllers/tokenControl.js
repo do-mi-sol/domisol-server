@@ -3,19 +3,16 @@ require("dotenv").config();
 const { errorMsg } = require("../utils/myMessage");
 
 const jwt = require("jsonwebtoken");
-
-const YOUR_SECRET_KEY = process.env.SECRET_KEY;
+const SECRETKEY = require("../config/jwt/jwt_config").jwt_secretkey
 
 module.exports = {
-    // 생성된 오큰은 req.headers.authorization에 저장된다.
     signToken: async (req, res, next) => {
         try {
-            const accessToken = await jwt.sign({ user_id: req.body.user_id }, YOUR_SECRET_KEY, { expiresIn: "30000" });
-            res.locals.token = accessToken;
+            req.token = await jwt.sign({ user: req.user }, SECRETKEY);
+            next();
         } catch (signtokenERR) {
             return errorMsg(res, 400, signtokenERR.message);
         }
-        next();
     },
 
     verifyToken: async (req, res, next) => {
