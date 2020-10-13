@@ -7,6 +7,8 @@ const { signToken, verifyToken } = require("../controllers/tokenController");
 
 const { idModify, passwordModify } = require("../controllers/modifycontrollers/modifyController");
 
+const { idFind, passwordFind } = require("../controllers/findcontrollers/findController");
+
 const myResponse = require("../utils/myResponse");
 
 /**
@@ -62,16 +64,16 @@ router.delete("/account/withdrawal", (req, res) => {
  * @method POST
  * @summary ID_Find
  */
-router.post("/find/idfind", (req, res) => {
-    res.send("passwordmodify");
+router.post("/find/idfind", idFind, (req, res) => {
+    res.json(myResponse(true, "idFind 성공", "user_id", res.locals.user_id));
 });
 
 /**
  * @method POST
  * @summary PW_Find
  */
-router.post("/find/passwordfind", (req, res) => {
-    res.send("passwordfind");
+router.post("/find/passwordfind", passwordFind, (req, res) => {
+    res.json(myResponse(true, "passwordFInd 성공", "password", res.locals.password));
 });
 
 /**

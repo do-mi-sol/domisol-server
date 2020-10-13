@@ -1,3 +1,4 @@
+const express = require("express");
 const bcrypt = require("bcrypt");
 
 const pool = require("../config/database/db_connect");
@@ -6,43 +7,36 @@ const SQL = require("../config/database/db_sql");
 const { errorMsg } = require("../utils/myMessage");
 
 module.exports = {
-  login: async(req, res, next) => {
-    const { user_id, password } = req.body;
+    login: async (req, res, next) => {
+        const { user_id, password } = req.body;
 
-    if (user_id == null || password == null) {
-      return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
-    }
-    try {
-      const data=await pool.query(SQL.SELECT_userid, user_id);
-      console.log(data[0])
-      
-    } catch (loginERR) {
-      return errorMsg(res, 300, loginERR.message);
-    }
-    next();
-  },
+        if (user_id == null || password == null) {
+            return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
+        }
 
-  signup: async (req, res, next) => {
-    const { user_id, email, password, name, gender, age } = req.body;
+        try {
+            const data = await pool.query(SQL.SELECT_userid, user_id);
+            console.log(data[0]);
+        } catch (loginERR) {
+            return errorMsg(res, 300, loginERR.message);
+        }
+        next();
+    },
 
-    if (
-      user_id == null ||
-      email == null ||
-      password == null ||
-      name == null ||
-      gender == null ||
-      age == null
-    ) {
-      return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
-    }
+    signup: async (req, res, next) => {
+        const { user_id, email, password, name, gender, age } = req.body;
 
-    try {
-      await pool.query(SQL.INSERT_all, req.body);
-    } catch (signupERR) {
-      return errorMsg(res, 300, signupERR.message);
-    }
-    next();
-  },
+        if (user_id == null || email == null || password == null || name == null || gender == null || age == null) {
+            return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
+        }
+
+        try {
+            await pool.query(SQL.INSERT_all, req.body);
+        } catch (signupERR) {
+            return errorMsg(res, 300, signupERR.message);
+        }
+        next();
+    },
 };
 
 // if (user_id == null && password == null) {
@@ -85,4 +79,3 @@ module.exports = {
 //   };
 //   checkPw();
 // });
-
