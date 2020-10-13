@@ -1,10 +1,7 @@
-const express = require("express");
+const pool = require("../config/database/db_connect");
+const SQL = require("../config/database/db_sql");
 
-const pool = require("../../config/database/db_connect");
-
-const SQL = require("../../config/database/db_sql");
-
-const { errorMsg } = require("../../utils/myMessage");
+const { errorMsg } = require("../utils/myMessage");
 
 require("dotenv").config();
 
