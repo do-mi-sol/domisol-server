@@ -1,10 +1,13 @@
 const express = require("express");
 const router = express.Router();
 
-const { login, signup } = require("../controllers/userControl");
+const { login, signup, widthdrawal } = require("../controllers/userControl");
+
 const { signToken, verifyToken } = require("../controllers/tokenControl");
-const { idModify, passwordModify } = require("../controllers/modifyControl");
-const { idFind, passwordFind } = require("../controllers/findControl");
+
+const { idModify, passwordModify } = require("../controllers/modifycontrol");
+
+const { idFind, passwordFind } = require("../controllers/findcontrol");
 
 const myResponse = require("../utils/myResponse");
 
@@ -53,8 +56,8 @@ router.put("/account/passwordmodify/:user_id", passwordModify, (req, res) => {
  * @method DELETE
  * @summary Withdrawal
  */
-router.delete("/account/withdrawal", (req, res) => {
-    res.send("withdrawal");
+router.delete("/account/withdrawal", widthdrawal, (req, res) => {
+    res.json(myResponse(true, "계정 삭제 성공"));
 });
 
 /**
