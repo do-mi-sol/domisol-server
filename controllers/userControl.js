@@ -20,6 +20,13 @@ module.exports = {
                 return errorMsg(res, 400, "잘못된 id 또는 password입니다.");
             } else {
                 if (await bcrypt.compareSync(password, id_pw_Data[0][0].password)) {
+                    req.user = {
+                        user_id: id_pw_Data[0][0].user_id,
+                        email: id_pw_Data[0][0].email,
+                        name: id_pw_Data[0][0].name,
+                        gender:id_pw_Data[0][0].gender,
+                        age:id_pw_Data[0][0].age,
+                      };
                     next();
                 } else return errorMsg(res, 400, "password가 맞지않음");
             }
