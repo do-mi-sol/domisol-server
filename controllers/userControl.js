@@ -1,3 +1,4 @@
+const express = require("express");
 const bcrypt = require("bcrypt");
 // const {domisolSalt} = require("../config/etc/etc_config")
 const pool = require("../config/database/db_connect");
@@ -36,9 +37,9 @@ module.exports = {
     }
   },
 
-  signup: async (req, res, next) => {
-    const { user_id, email, password, name, gender, age } = req.body;
 
+  signup: async (req, res, next) => {
+     const { user_id, email, password, name, gender, age } = req.body;
     if (
       user_id == "" ||
       email == "" ||
@@ -107,4 +108,3 @@ module.exports = {
 //   };
 //   checkPw();
 // });
-
