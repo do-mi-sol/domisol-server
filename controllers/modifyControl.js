@@ -26,6 +26,9 @@ module.exports = {
             }
             if (await bcrypt.compareSync(password, search_data[0].password)) {
                 const update_data = await pool.query(SQL.UPDATE_userid, [newUserId, oldUserId]);
+                /**
+                 * 아이디 변경에 성공하면 로그아웃 상태로 다시 로그인 페이지로 가서 토큰발급받도록.
+                 */
                 if (update_data[0].affectedRows === 0) return errorMsg(res, 202, "아이디 변경에 실패했습니다.");
             }
         } catch (idmodifyERR) {
@@ -51,8 +54,14 @@ module.exports = {
                 return errorMsg(res, 202, "변경하려는 비밀번호가 서로 일치하지 않습니다.");
             }
             if (await bcrypt.compareSync(oldPassword, search_data[0].password)) {
-                const update_data = await pool.query(SQL.UPDATE_userpassword, [newPassword, userId]);
+                const hashPw = await bcrypt.hash(newPassword, 10);
+                const update_data = await pool.query(SQL.UPDATE_userpassword, [hashPw, userId]);
+                /**
+                 * 비밀번호 변경에 성공하면 로그아웃 상태로 다시 로그인 페이지로 가서 토큰발급받도록.
+                 */
                 if (update_data[0].affectedRows === 0) return errorMsg(res, 202, "비밀번호 변경에 실패했습니다.");
+            } else {
+                return errorMsg(res, 400, "입력하신 비밀번호를 확인해주세요.");
             }
         } catch (passwordmodifyERR) {
             return errorMsg(res, 400, passwordmodifyERR.message);
