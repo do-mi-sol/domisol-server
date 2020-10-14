@@ -24,9 +24,9 @@ module.exports = {
                         user_id: id_pw_Data[0][0].user_id,
                         email: id_pw_Data[0][0].email,
                         name: id_pw_Data[0][0].name,
-                        gender:id_pw_Data[0][0].gender,
-                        age:id_pw_Data[0][0].age,
-                      };
+                        gender: id_pw_Data[0][0].gender,
+                        age: id_pw_Data[0][0].age,
+                    };
                     next();
                 } else return errorMsg(res, 400, "password가 맞지않음");
             }
@@ -72,5 +72,18 @@ module.exports = {
         } catch (widthdrawalERR) {
             return errorMsg(res, 300, widthdrawalERR.message);
         }
+    },
+    account: async (req, res, next) => {
+        const user = req.decoded.user;
+        /*
+            토큰의 payload를 가져와서 해당 유저가 작성한 글 & 댓글을 찾는 쿼리문 작성.
+            해당 정보를 req.account에 담아서 전달.
+            router에서 "account"로 클라이언트에 전달.
+        */
+        req.account = {
+            user,
+            data: {},
+        };
+        next();
     },
 };

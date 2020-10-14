@@ -14,5 +14,5 @@ app.use("/api/user", cors(), userRouter);
 
 //start the server
 app.listen(3001, () => {
-  console.log("도미솔 웹 서버  ->  " + "http://localhost:3001");
+    console.log("도미솔 웹 서버  ->  " + "http://localhost:3001");
 });

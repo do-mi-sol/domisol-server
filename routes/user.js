@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { login, signup, widthdrawal } = require("../controllers/userControl");
+const { login, signup, widthdrawal, account } = require("../controllers/userControl");
 
 const { signToken, verifyToken } = require("../controllers/tokenControl");
 
@@ -16,9 +16,11 @@ const myResponse = require("../utils/myResponse");
  * @summary Login
  */
 router.post("/login", login, signToken, (req, res) => {
-    res.status(201).json(myResponse(true, "login 성공", "data", {
-        token: req.token
-    }));
+    res.status(201).json(
+        myResponse(true, "login 성공", "data", {
+            token: req.token,
+        })
+    );
 });
 
 /**
@@ -33,15 +35,15 @@ router.post("/signup", signup, (req, res) => {
  * @method POST
  * @summary Account
  */
-router.post("/account", (req, res) => {
-    res.json(myResponse(true, "account 성공"));
+router.post("/account", verifyToken, account, (req, res) => {
+    res.json(myResponse(true, "account 성공", "account", req.account));
 });
 
 /**
  * @method PUT
  * @summary ID_Modify
  */
-router.put("/account/idmodify/:user_id", idModify, (req, res) => {
+router.put("/account/idmodify/", verifyToken, idModify, (req, res) => {
     res.json(myResponse(true, "idModify 성공"));
 });
 
@@ -50,7 +52,7 @@ router.put("/account/idmodify/:user_id", idModify, (req, res) => {
  * @summary PW_Modify
  */
 
-router.put("/account/passwordmodify/:user_id", passwordModify, (req, res) => {
+router.put("/account/passwordmodify/", verifyToken, passwordModify, (req, res) => {
     res.json(myResponse(true, "passwordModify 성공"));
 });
 
