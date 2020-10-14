@@ -16,22 +16,25 @@ module.exports = {
     },
 
     verifyToken: async (req, res, next) => {
-        // 토큰은 클라이언트에서 req.headers로 전달.
-        // var token = req.headers.authorization;
-        // 테스트용 token
-        var token =
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7InVzZXJfaWQiOiJ0ZXN0MSIsImVtYWlsIjoidGVzdDFAdGVzdDEiLCJuYW1lIjoidGVzdDEiLCJnZW5kZXIiOiJtYWxlIiwiYWdlIjoiMjMifSwiaWF0IjoxNjAyNjU4ODYxfQ.HOgafw6vH8XJXlgi3W9H-7af2V1nE1Fs8-nQ_NEqSZQ";
+        var token = req.headers.authorization;
         try {
             if (!token) {
                 return errorMsg(res, 403, "토큰이 존재하지 않습니다.");
+            } else {
+                await jwt.verify(token, SECRETKEY, (error, decoded) => {
+                    if (error) {
+                        return errorMsh(res, 500, eror.message);
+                    } else {
+                        req.user = decoded.user;
+                        next();
+                    }
+                });
             }
-            req.decoded = await jwt.verify(token, SECRETKEY);
         } catch (verifyERR) {
             if (verifyERR.name === "TokenExpiredError") {
                 return errorMsg(res, 419, "이미 만료된 토큰입니다.");
             }
             return errorMsg(res, 401, verifyERR.message); // 토큰이 일치하지 않을 떄
         }
-        next();
     },
 };
