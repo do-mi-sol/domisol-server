@@ -16,8 +16,8 @@ const myResponse = require("../utils/myResponse");
  * @summary Login
  */
 router.post("/login", login, signToken, (req, res) => {
-    res.status(201).json(myResponse(true, "login 성공", "data", {
-        token: req.token
+    res.status(201).json(myResponse(true, "login 성공","data",{
+        token:req.token
     }));
 });
 
@@ -76,22 +76,6 @@ router.post("/find/idfind", idFind, (req, res) => {
  */
 router.post("/find/passwordfind", passwordFind, (req, res) => {
     res.json(myResponse(true, "passwordFInd 성공", "password", res.locals.password));
-});
-
-/**
- * @method GET
- * @summary TokenTest
- */
-router.get("/veritytest", verifyToken, (req, res) => {
-    res.json(myResponse(true, "verifyToken 성공", "data", req.decoded));
-});
-
-/**
- * @method GET
- * @summary TokenTest
- */
-router.get("/signtoken", signToken, (req, res) => {
-    res.json(myResponse(true, "signToken 성공", "token", res.locals.token));
 });
 
 module.exports = router;

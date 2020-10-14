@@ -8,9 +8,7 @@ require("dotenv").config();
 
 module.exports = {
     idFind: async (req, res, next) => {
-        user = req.body;
-
-        // SELECT_name_email = `SELECT * FROM users WHERE name = ? AND email =?`;
+        const {user_id} = req.body;
         try {
             const [search_data] = await pool.query(SQL.SELECT_name_email, [user.name, user.email]);
             if (search_data[0].length === 0) {

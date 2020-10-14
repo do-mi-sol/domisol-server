@@ -23,7 +23,7 @@ module.exports = {
                 return errorMsg(res, 403, "토큰이 존재하지 않습니다.");
             }
             // 토큰에 담긴 정보를 req.decoded에 담아서 보냈다.
-            req.decoded = await jwt.verify(req.headers.authorization, YOUR_SECRET_KEY);
+            req.decoded = await jwt.verify(req.headers.authorization, SECRETKEY);
             console.log(req.decoded);
         } catch (verifyERR) {
             if (verifyERR.name === "TokenExpiredError") {
