@@ -84,10 +84,8 @@ module.exports = {
         }
     },
 
-    // account: async (req,res,next)=>{
-    //     const {} ;
-    //     try{
-
-    //     }
-    // }
+    account: async (req, res, next) => {
+        if (!req.headers.authorization) return errorMsg(res, 400, "password가 맞지않음");
+        else next();
+    },
 };
