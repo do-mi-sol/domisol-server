@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { login, signup, widthdrawal } = require("../controllers/userControl");
+const { login, signup, widthdrawal, account } = require("../controllers/userControl");
 
 const { signToken, verifyToken } = require("../controllers/tokenControl");
 
@@ -16,9 +16,11 @@ const myResponse = require("../utils/myResponse");
  * @summary Login
  */
 router.post("/login", login, signToken, (req, res) => {
-    res.status(201).json(myResponse(true, "login 성공","data",{
-        token:req.token
-    }));
+    res.status(201).json(
+        myResponse(true, "login 성공", "data", {
+            token: req.token,
+        })
+    );
 });
 
 /**
@@ -33,7 +35,7 @@ router.post("/signup", signup, (req, res) => {
  * @method POST
  * @summary Account
  */
-router.post("/account", (req, res) => {
+router.post("/account", verifyToken, (req, res) => {
     res.json(myResponse(true, "account 성공"));
 });
 

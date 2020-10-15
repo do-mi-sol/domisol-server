@@ -24,9 +24,9 @@ module.exports = {
                         user_id: id_pw_Data[0][0].user_id,
                         email: id_pw_Data[0][0].email,
                         name: id_pw_Data[0][0].name,
-                        gender:id_pw_Data[0][0].gender,
-                        age:id_pw_Data[0][0].age,
-                      };
+                        gender: id_pw_Data[0][0].gender,
+                        age: id_pw_Data[0][0].age,
+                    };
                     next();
                 } else return errorMsg(res, 400, "password가 맞지않음");
             }
@@ -37,7 +37,14 @@ module.exports = {
 
     signup: async (req, res, next) => {
         const { user_id, email, password, name, gender, age } = req.body;
-        if (user_id == "" || email == "" || password == "" || name == "" || gender == "" || age == "") {
+        if (
+            user_id == "" ||
+            email == "" ||
+            password == "" ||
+            name == "" ||
+            gender == "" ||
+            age == ""
+        ) {
             return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
         }
 
@@ -45,7 +52,8 @@ module.exports = {
             const idData = await pool.query(SQL.SELECT_userid, user_id);
             const emailData = await pool.query(SQL.SELECT_email, email);
 
-            if (!idData[0] || !emailData[0]) return errorMsg(res, 300, "존재하는 id 또는 email 입니다.");
+            if (!idData[0] || !emailData[0])
+                return errorMsg(res, 300, "존재하는 id 또는 email 입니다.");
             else {
                 req.body.password = await bcrypt.hash(password, 10);
                 await pool.query(SQL.INSERT_all, req.body);
@@ -55,6 +63,7 @@ module.exports = {
         }
         next();
     },
+
     widthdrawal: async (req, res, next) => {
         const { user_id, email, password } = req.body;
         if (user_id == "" || email == "" || password == "") {
@@ -64,7 +73,8 @@ module.exports = {
             const { user_id, email, password } = req.body;
             const [idData] = await pool.query(SQL.SELECT_userid, user_id);
             const [emailData] = await pool.query(SQL.SELECT_email, email);
-            if (!idData[0] || !emailData[0]) return errorMsg(res, 300, "존재하는 id 또는 email 입니다.");
+            if (!idData[0] || !emailData[0])
+                return errorMsg(res, 300, "존재하는 id 또는 email 입니다.");
             if (await bcrypt.compareSync(password, idData[0].password)) {
                 await pool.query(SQL.DELETE_userid, user_id);
                 next();
@@ -73,4 +83,11 @@ module.exports = {
             return errorMsg(res, 300, widthdrawalERR.message);
         }
     },
+
+    // account: async (req,res,next)=>{
+    //     const {} ;
+    //     try{
+
+    //     }
+    // }
 };
