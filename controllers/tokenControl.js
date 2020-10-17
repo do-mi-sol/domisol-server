@@ -21,11 +21,11 @@ module.exports = {
             if (!token) {
                 return errorMsg(res, 403, "토큰이 존재하지 않습니다.");
             } else {
-                await jwt.verify(token, SECRETKEY, (error, decoded) => {
+                await jwt.verify(token, SECRETKEY, (error, data) => {
                     if (error) {
                         return errorMsh(res, 500, eror.message);
                     } else {
-                        req.user = decoded.user;
+                        req.user = data.user;
                         next();
                     }
                 });

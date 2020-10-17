@@ -11,6 +11,8 @@ const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
 const userRouter = require("./routes/user");
 app.use("/api/user", cors(), userRouter);
+const boardRouter = require("./routes/board");
+app.use("/api/board/", boardRouter);
 
 //start the server
 app.listen(3001, () => {
