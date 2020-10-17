@@ -8,14 +8,15 @@ const SECRETKEY = require("../config/jwt/jwt_config").jwt_secretkey;
 module.exports = {
     signToken: async (req, res, next) => {
         try {
-            req.token = await jwt.sign({ user: req.user }, SECRETKEY);
+            req.token = jwt.sign({ user: req.user }, SECRETKEY);
             next();
         } catch (signtokenERR) {
-            return errorMsg(res, 400, signtokenERR.message);
+            return errorMsg(res, signtokenERR.message);
         }
     },
 
     verifyToken: async (req, res, next) => {
+<<<<<<< HEAD
         var token = req.headers.authorization;
         try {
             if (!token) {
@@ -36,5 +37,16 @@ module.exports = {
             }
             return errorMsg(res, 401, verifyERR.message); // 토큰이 일치하지 않을 떄
         }
+=======
+        const token = req.headers.authorization.split("Bearer ")[1];
+
+        jwt.verify(token, SECRETKEY, (err, data) => {
+            if (err) return errorMsg(res, "토큰이 유효하지 않습니다.");
+            else {
+                req.user = data.user;
+                next();
+            }
+        });
+>>>>>>> 2ae9360cce63976c02bd43c96c080d54c2c009e2
     },
 };

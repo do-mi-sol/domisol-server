@@ -13,7 +13,7 @@ const myResponse = require("../utils/myResponse");
 
 /**
  * @method POST
- * @summary Login
+ * @summary Login o
  */
 router.post("/login", login, signToken, (req, res) => {
     res.status(201).json(
@@ -25,7 +25,7 @@ router.post("/login", login, signToken, (req, res) => {
 
 /**
  * @method POST
- * @summary SignUp
+ * @summary SignUp o
  */
 router.post("/signup", signup, (req, res) => {
     res.status(201).json(myResponse(true, "signup 성공"));
@@ -33,17 +33,21 @@ router.post("/signup", signup, (req, res) => {
 
 /**
  * @method POST
- * @summary Account
+ * @summary Account o
  */
-router.post("/account", verifyToken, account, (req, res) => {
-    res.json(myResponse(true, "account 성공", "account", req.account));
+router.post("/account", account, verifyToken, (req, res) => {
+    res.json(
+        myResponse(true, "account 성공", "data", {
+            user: req.user,
+        })
+    );
 });
 
 /**
  * @method PUT
- * @summary ID_Modify
+ * @summary ID_Modify o
  */
-router.put("/account/idmodify/", verifyToken, idModify, (req, res) => {
+router.put("/account/idmodify", verifyToken, idModify, (req, res) => {
     res.json(myResponse(true, "idModify 성공"));
 });
 
@@ -52,7 +56,7 @@ router.put("/account/idmodify/", verifyToken, idModify, (req, res) => {
  * @summary PW_Modify
  */
 
-router.put("/account/passwordmodify/", verifyToken, passwordModify, (req, res) => {
+router.put("/account/passwordmodify", verifyToken, passwordModify, (req, res) => {
     res.json(myResponse(true, "passwordModify 성공"));
 });
 
