@@ -12,7 +12,8 @@ const UPDATE_password = "UPDATE user SET password =? WHERE user_id = ?;";
 
 const DELETE_userid = "DELETE FROM user WHERE user_id = ?;";
 
-const SELECT_allboard = "SELECT board_number, board_title, name, gender, board_date, board_views FROM board";
+const SELECT_allboard =
+    "SELECT board_number, board_title, name, gender, board_date, board_views FROM board";
 const SELECT_countboard = "SELECT count(*) count FROM board;";
 const SELECT_boardnum = "SET @rownum:= ?;";
 const SELECT_boardlimit =

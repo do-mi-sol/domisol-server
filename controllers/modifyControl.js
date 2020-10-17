@@ -1,5 +1,3 @@
-const bcrypt = require("bcrypt");
-
 const pool = require("../config/database/db_connect");
 const SQL = require("../config/database/db_sql");
 const bcrypt = require("bcrypt");
