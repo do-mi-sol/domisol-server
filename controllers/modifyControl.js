@@ -1,3 +1,5 @@
+const bcrypt = require("bcrypt");
+
 const pool = require("../config/database/db_connect");
 const SQL = require("../config/database/db_sql");
 const bcrypt = require("bcrypt");
@@ -7,6 +9,7 @@ const { errorMsg } = require("../utils/myMessage");
 module.exports = {
     idModify: async (req, res, next) => {
         const { new_user_id, password } = req.body;
+
         const user_id = req.user.user_id;
 
         if (new_user_id == "" || password == "") {
