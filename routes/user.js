@@ -45,9 +45,9 @@ router.post("/account", account, verifyToken, (req, res) => {
 
 /**
  * @method PUT
- * @summary ID_Modify
+ * @summary ID_Modify o
  */
-router.put("/account/idmodify/:user_id", idModify, (req, res) => {
+router.put("/account/idmodify", verifyToken, idModify, (req, res) => {
     res.json(myResponse(true, "idModify 성공"));
 });
 
@@ -56,7 +56,7 @@ router.put("/account/idmodify/:user_id", idModify, (req, res) => {
  * @summary PW_Modify
  */
 
-router.put("/account/passwordmodify/:user_id", passwordModify, (req, res) => {
+router.put("/account/passwordmodify", verifyToken, passwordModify, (req, res) => {
     res.json(myResponse(true, "passwordModify 성공"));
 });
 
