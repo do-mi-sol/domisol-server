@@ -10,67 +10,80 @@ module.exports = {
         const { user_id, password } = req.body;
 
         if (user_id == "" || password == "") {
-            return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
+            return errorMsg(res, "채워지지 않은 정보가 있습니다.");
         }
 
         try {
-            const id_pw_Data = await pool.query(SQL.SELECT_userid, user_id);
+            const [id_pw_Data] = await pool.query(SQL.SELECT_userid, user_id);
 
-            if (id_pw_Data[0] == null) {
-                return errorMsg(res, 400, "잘못된 id 또는 password입니다.");
+            if (id_pw_Data.length == 0) {
+                return errorMsg(res, "잘못된 id 또는 password입니다.");
             } else {
-                if (await bcrypt.compareSync(password, id_pw_Data[0][0].password)) {
+                if (await bcrypt.compareSync(password, id_pw_Data[0].password)) {
                     req.user = {
-                        user_id: id_pw_Data[0][0].user_id,
-                        email: id_pw_Data[0][0].email,
-                        name: id_pw_Data[0][0].name,
-                        gender:id_pw_Data[0][0].gender,
-                        age:id_pw_Data[0][0].age,
-                      };
+                        user_id: id_pw_Data[0].user_id,
+                        email: id_pw_Data[0].email,
+                        name: id_pw_Data[0].name,
+                        gender: id_pw_Data[0].gender,
+                        age: id_pw_Data[0].age,
+                    };
                     next();
-                } else return errorMsg(res, 400, "password가 맞지않음");
+                } else return errorMsg(res, "password가 맞지않음");
             }
         } catch (loginERR) {
-            return errorMsg(res, 300, loginERR.message);
+            return errorMsg(res, loginERR.message);
         }
     },
 
     signup: async (req, res, next) => {
         const { user_id, email, password, name, gender, age } = req.body;
-        if (user_id == "" || email == "" || password == "" || name == "" || gender == "" || age == "") {
-            return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
+        if (
+            user_id == "" ||
+            email == "" ||
+            password == "" ||
+            name == "" ||
+            gender == "" ||
+            age == ""
+        ) {
+            return errorMsg(res, "채워지지 않은 정보가 있습니다.");
         }
 
         try {
             const idData = await pool.query(SQL.SELECT_userid, user_id);
             const emailData = await pool.query(SQL.SELECT_email, email);
 
-            if (!idData[0] || !emailData[0]) return errorMsg(res, 300, "존재하는 id 또는 email 입니다.");
+            if (!idData[0] || !emailData[0]) return errorMsg(res, "존재하는 id 또는 email 입니다.");
             else {
                 req.body.password = await bcrypt.hash(password, 10);
                 await pool.query(SQL.INSERT_all, req.body);
             }
         } catch (signupERR) {
-            return errorMsg(res, 300, signupERR.message);
+            return errorMsg(res, signupERR.message);
         }
         next();
     },
+
     widthdrawal: async (req, res, next) => {
         const { user_id, email, password } = req.body;
         if (user_id == "" || email == "" || password == "") {
-            return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
+            return errorMsg(res, "채워지지 않은 정보가 있습니다.");
         }
         try {
             const { user_id, email, password } = req.body;
             const [idData] = await pool.query(SQL.SELECT_userid, user_id);
             const [emailData] = await pool.query(SQL.SELECT_email, email);
-            if (!idData[0] || !emailData[0]) return errorMsg(res, 300, "존재하는 id 또는 email 입니다.");
+            if (!idData[0] || !emailData[0]) return errorMsg(res, "존재하는 id 또는 email 입니다.");
             if (await bcrypt.compareSync(password, idData[0].password)) {
                 await pool.query(SQL.DELETE_userid, user_id);
                 next();
-            } else return errorMsg(res, 400, "password가 맞지않음");
+            } else return errorMsg(res, "password가 맞지않음");
         } catch (widthdrawalERR) {
-            return errorMsg(res, 300, widthdrawalERR.message);
+            return errorMsg(res, widthdrawalERR.message);
         }
+    },
+
+    account: async (req, res, next) => {
+        if (!req.headers.authorization) return errorMsg(res, "token is null");
+        else next();
     },
 };
