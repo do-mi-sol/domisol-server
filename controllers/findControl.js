@@ -14,13 +14,13 @@ module.exports = {
             if (search_data[0].length === 0) {
                 return errorMsg(
                     res,
-                    300,
+
                     "아이디 찾기 실패. 입력하신 정보와 일치하는 아이디가 존재하지 않습니다."
                 );
             }
             res.locals.user_id = search_data[0].user_id;
-        } catch (idfindERR) {
-            return errorMsg(res, 400, idfindERR.message);
+        } catch (idFindERR) {
+            return errorMsg(res, idFindERR.message);
         }
         next();
     },
@@ -36,13 +36,13 @@ module.exports = {
             if (search_data.length === 0 || search_data[0] === undefined) {
                 return errorMsg(
                     res,
-                    300,
+
                     "아이디 찾기 실패. 입력하신 정보와 일치하는 아이디가 존재하지 않습니다."
                 );
             }
             res.locals.password = search_data[0].password;
-        } catch (passfindERR) {
-            return errorMsg(res, 400, passfindERR.message);
+        } catch (passwordFindERR) {
+            return errorMsg(res, passwordFindERR.message);
         }
         next();
     },

@@ -10,22 +10,22 @@ module.exports = {
         const user_id = req.user.user_id;
 
         if (new_user_id == "" || password == "") {
-            return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
+            return errorMsg(res, "채워지지 않은 정보가 있습니다.");
         }
         try {
             const [newid_data] = await pool.query(SQL.SELECT_userid, new_user_id);
             const [id_data] = await pool.query(SQL.SELECT_userid, user_id);
 
             if (newid_data.length != 0) {
-                return errorMsg(res, 202, "존재하는 아이디 입니다.");
+                return errorMsg(res, "존재하는 아이디 입니다.");
             } else {
                 if (await bcrypt.compareSync(password, id_data[0].password)) {
                     await pool.query(SQL.UPDATE_userid, [new_user_id, user_id]);
                     next();
-                } else return errorMsg(res, 202, "비밀번호가 틀립니다.");
+                } else return errorMsg(res, "비밀번호가 틀립니다.");
             }
         } catch (idModifyERR) {
-            return errorMsg(res, 400, idModifyERR.message);
+            return errorMsg(res, idModifyERR.message);
         }
     },
 
@@ -34,7 +34,7 @@ module.exports = {
         const user_id = req.user.user_id;
 
         if (new_password == "" || password == "") {
-            return errorMsg(res, 300, "채워지지 않은 정보가 있습니다.");
+            return errorMsg(res, "채워지지 않은 정보가 있습니다.");
         }
         try {
             const [id_data] = await pool.query(SQL.SELECT_userid, user_id);
@@ -43,9 +43,9 @@ module.exports = {
                 hash_pw = await bcrypt.hash(new_password, 10);
                 await pool.query(SQL.UPDATE_password, [hash_pw, user_id]);
                 next();
-            } else return errorMsg(res, 202, "비밀번호가 틀립니다.");
+            } else return errorMsg(res, "비밀번호가 틀립니다.");
         } catch (passwordModifyERR) {
-            return errorMsg(res, 400, passwordModifyERR.message);
+            return errorMsg(res, passwordModifyERR.message);
         }
     },
 };
