@@ -31,7 +31,7 @@ module.exports = {
             };
             next();
         } catch (viewERR) {
-            errorMsg(res, 400, viewERR.message);
+            errorMsg(400, viewERR.message);
             return console.log(viewERR);
         }
     },
@@ -42,12 +42,58 @@ module.exports = {
             const { user_id, email, name, gender } = req.user;
             const { title, contents } = req.body;
             const file = "/upload/" + req.file.filename;
-            const sql = `INSERT INTO board VALUES (null,?,?,NOW(),?,?,?,?,?,?)`;
             const data = [title, contents, file, 0, 0, user_id, name, gender];
-            await pool.query(sql, data);
+            await pool.query(SQL.INSERT_board, data);
             next();
         } catch (writeERR) {
-            errorMsg(res, 400, writeERR.message);
+            errorMsg(400, writeERR.message);
+        }
+    },
+
+    boardDetail: async (req, res, next) => {
+        try {
+            const board_number = req.params.board_number;
+            const [[detail]] = await pool.query(SQL.SELECT_boardnumber, board_number);
+            console.log(detail);
+            req.detail = {
+                detail,
+            };
+            next();
+        } catch (boardDetailERR) {
+            errorMsg(400, boardDetailERR.message);
+        }
+    },
+
+    like: async (req, res, next) => {
+        // 좋아요를 누른 버튼이 content인지, comment인지 client에서 받아온다.
+        // const variable = req.body.variable;
+        try {
+            const variable = {
+                board_number: 20,
+                userId: "user",
+            };
+            if (variable.board_number) {
+                const [[boardHeart]] = await pool.query(SQL.SELECT_boardheart, variable.board_number);
+                const boardHeartNum = boardHeart.board_heart + 1;
+                const [boardUpdate] = await pool.query(SQL.UPDATE_boardheart, [boardHeartNum, variable.board_number]);
+                req.like = {
+                    boardHeart: boardHeartNum,
+                };
+                next();
+            } else {
+                const [[commentHeart]] = await pool.query(SQL.SELECT_commentheart, variable.comment_number);
+                const commentHeartNum = commentHeart.comment_heart + 1;
+                const [commentUpdate] = await pool.query(SQL.UPDATE_commentheart, [
+                    commentHeartNum,
+                    variable.comment_number,
+                ]);
+                req.like = {
+                    commentHeart: commentHeartNum,
+                };
+                next();
+            }
+        } catch (likeERR) {
+            errorMsg(400, likeERR.message);
         }
     },
 };
