@@ -37,7 +37,14 @@ module.exports = {
 
     signup: async (req, res, next) => {
         const { user_id, email, password, name, gender, age } = req.body;
-        if (user_id == "" || email == "" || password == "" || name == "" || gender == "" || age == "") {
+        if (
+            user_id == "" ||
+            email == "" ||
+            password == "" ||
+            name == "" ||
+            gender == "" ||
+            age == ""
+        ) {
             return errorMsg(res, "채워지지 않은 정보가 있습니다.");
         }
 
@@ -49,11 +56,11 @@ module.exports = {
             else {
                 req.body.password = await bcrypt.hash(password, 10);
                 await pool.query(SQL.INSERT_all, req.body);
+                next();
             }
         } catch (signupERR) {
             return errorMsg(res, signupERR.message);
         }
-        next();
     },
 
     widthdrawal: async (req, res, next) => {
