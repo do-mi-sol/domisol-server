@@ -31,7 +31,7 @@ router.get("/board-detail/:board_number", boardDetail, (req, res) => {
 });
 
 router.get("/like", like, (req, res) => {
-    res.json(myResponse(true, "like 성공", "data", req.like));
+    res.json(myResponse(true, "like 성공", "data", req.heart));
 });
 /**
  * @method PUT
