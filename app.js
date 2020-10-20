@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-// const cors = require("cors");
 
 let port = process.env.PORT || 9001;
 
