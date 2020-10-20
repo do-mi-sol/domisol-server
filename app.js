@@ -8,7 +8,7 @@ let port = process.env.PORT || 9001;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("*", (req, res) => {
+app.get("/", (req, res) => {
     res.json("도도미미소솔 서버");
 });
 
