@@ -64,8 +64,8 @@ router.put("/account/passwordmodify", verifyToken, passwordModify, (req, res) =>
  * @method DELETE
  * @summary Withdrawal
  */
-router.delete("/account/withdrawal", widthdrawal, (req, res) => {
-    res.json(myResponse(true, "계정 삭제 성공"));
+router.delete("/account/withdrawal", verifyToken, widthdrawal, (req, res) => {
+    res.json(myResponse(true, "Withdrawal 성공"));
 });
 
 /**

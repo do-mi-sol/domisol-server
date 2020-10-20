@@ -22,10 +22,15 @@ const SELECT_boardlimit =
     "SELECT @rownum:=@rownum+1 as number, board_title, board_date FROM board ORDER BY board_date DESC LIMIT ?,?";
 
 //comment
-const SELECT_allcomment = "SELECT * FROM comment;";
+const INSERT_allcomment = "INSERT INTO comment SET ?";
+
+const SELECT_allcomment = "SELECT * FROM comment WHERE board_number = ?;";
+
+const DELETE_comment = "DELETE FROM comment WHERE user_id = ?;";
 
 module.exports = {
     INSERT_all,
+    INSERT_allcomment,
     SELECT_userid,
     SELECT_email,
     SELECT_password,
@@ -36,8 +41,9 @@ module.exports = {
     SELECT_countboard,
     SELECT_boardlimit,
     SELECT_boardnum,
+    SELECT_allcomment,
     UPDATE_userid,
     UPDATE_password,
     DELETE_userid,
-    SELECT_allcomment,
+    DELETE_comment,
 };
