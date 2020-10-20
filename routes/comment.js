@@ -1,14 +1,20 @@
 const express = require("express");
 const router = express.Router();
 
+const { comments } = require("../controllers/commentControl");
+
 const myResponse = require("../utils/myResponse");
 
 /**
  * @method POST
  * @summary comment
  */
-router.post("/", (req, res) => {
-    res.status(201).json(myResponse(true, "comment 성공"));
+router.post("/", comments, (req, res) => {
+    res.status(201).json(
+        myResponse(true, "comment 성공", "data", {
+            comment: req.comment,
+        })
+    );
 });
 
 /**

@@ -22,7 +22,7 @@ const SELECT_boardlimit =
     "SELECT @rownum:=@rownum+1 as number, board_title, board_date FROM board ORDER BY board_date DESC LIMIT ?,?";
 
 //comment
-const SELECT_allcomment = "SELECT * FROM user WHERE user_id=? ;";
+const SELECT_allcomment = "SELECT * FROM comment;";
 
 module.exports = {
     INSERT_all,
