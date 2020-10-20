@@ -1,18 +1,22 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
+// const cors = require("cors");
 
-var port = process.env.PORT || 9001;
+let port = process.env.PORT || 9001;
 
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("*", (req, res) => {
+    res.json("도도미미소솔 서버");
+});
+
 //router
-const indexRouter = require("./routes/index");
-app.use("/", indexRouter);
+// const indexRouter = require("./routes/index");
+// app.use("/", indexRouter);
 const userRouter = require("./routes/user");
-app.use("/api/user", cors(), userRouter);
+app.use("/api/user", userRouter);
 const boardRouter = require("./routes/board");
 app.use("/api/board/", boardRouter);
 
