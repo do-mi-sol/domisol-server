@@ -3,6 +3,7 @@ const SQL = require("../config/database/db_sql");
 const multer = require("multer");
 const fs = require("fs");
 const { errorMsg } = require("../utils/myMessage");
+const { search } = require("../routes/user");
 
 module.exports = {
     view: async (req, res, next) => {
@@ -31,8 +32,7 @@ module.exports = {
             };
             next();
         } catch (viewERR) {
-            errorMsg(res, 400, viewERR.message);
-            return console.log(viewERR);
+            return errorMsg(400, viewERR.message);
         }
     },
 
@@ -42,12 +42,88 @@ module.exports = {
             const { user_id, email, name, gender } = req.user;
             const { title, contents } = req.body;
             const file = "/upload/" + req.file.filename;
-            const sql = `INSERT INTO board VALUES (null,?,?,NOW(),?,?,?,?,?,?)`;
             const data = [title, contents, file, 0, 0, user_id, name, gender];
-            await pool.query(sql, data);
+            await pool.query(SQL.INSERT_board, data);
             next();
         } catch (writeERR) {
-            errorMsg(res, 400, writeERR.message);
+            return errorMsg(400, writeERR.message);
+        }
+    },
+
+    boardDetail: async (req, res, next) => {
+        try {
+            const board_number = req.params.board_number;
+            const [[detail]] = await pool.query(SQL.SELECT_boardnumber, board_number);
+            req.detail = {
+                detail,
+            };
+            next();
+        } catch (boardDetailERR) {
+            return errorMsg(400, boardDetailERR.message);
+        }
+    },
+
+    like: async (req, res, next) => {
+        try {
+            const variable = req.body.variable;
+            if (variable.board_number && !variable.comment_number) {
+                const [[searchHeart]] = await pool.query(SQL.SELECT_boardheart, [
+                    variable.board_number,
+                    variable.userId,
+                ]);
+                if (searchHeart) {
+                    await pool.query(SQL.DELETE_boardheart, [variable.board_number, variable.userId]);
+                    const [[heartCount]] = await pool.query(SQL.SELECT_boardheartCount, variable.board_number);
+                    req.heart = {
+                        boardHeart: count.count,
+                    };
+                    next();
+                } else {
+                    await pool.query(SQL.INSERT_boardheart, [variable.board_number, variable.userId]);
+                    const [[heartCount]] = await pool.query(SQL.SELECT_boardheartCount, variable.board_number);
+                    req.heart = {
+                        boardHeart: heartCount.count,
+                    };
+                    next();
+                }
+            } else {
+                const [[searchHeart]] = await pool.query(SQL.SELECT_commentheart, [
+                    variable.comment_number,
+                    variable.board_number,
+                    variable.userId,
+                ]);
+                if (searchHeart) {
+                    await pool.query(SQL.DELETE_commentheart, [
+                        variable.comment_number,
+                        variable.board_number,
+                        variable.userId,
+                    ]);
+                    const [[heartCount]] = await pool.query(SQL.SELECT_commentheartCount, [
+                        variable.comment_number,
+                        variable.board_number,
+                    ]);
+                    req.heart = {
+                        commentHeart: heartCount.count,
+                    };
+                    next();
+                } else {
+                    await pool.query(SQL.INSERT_commentheart, [
+                        variable.comment_number,
+                        variable.board_number,
+                        variable.userId,
+                    ]);
+                    const [[heartCount]] = await pool.query(SQL.SELECT_commentheartCount, [
+                        variable.comment_number,
+                        variable.board_number,
+                    ]);
+                    req.heart = {
+                        commentHeart: heartCount.count,
+                    };
+                    next();
+                }
+            }
+        } catch (likeERR) {
+            return errorMsg(400, likeERR.message);
         }
     },
 };

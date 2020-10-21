@@ -5,9 +5,9 @@ const { login, signup, widthdrawal, account } = require("../controllers/userCont
 
 const { signToken, verifyToken } = require("../controllers/tokenControl");
 
-const { idModify, passwordModify } = require("../controllers/modifycontrol");
+const { idModify, passwordModify } = require("../controllers/modifyControl");
 
-const { idFind, passwordFind } = require("../controllers/findcontrol");
+const { idFind, passwordFind } = require("../controllers/findControl");
 
 const myResponse = require("../utils/myResponse");
 
