@@ -23,18 +23,26 @@ const SELECT_boardlimit =
 // boart insert content
 const INSERT_board = `INSERT INTO board VALUES (null,?,?,NOW(),?,?,?,?,?,?)`;
 
-// board & comment like sql
+// board detail
 const SELECT_boardnumber = `SELECT * FROM board WHERE board_number = ?`;
 
-const SELECT_boardheart = `SELECT board_heart FROM board WHERE board_number =?`;
-const UPDATE_boardheart = `UPDATE board SET board_heart = ? WHERE board_number =?`;
+// board heart
+const SELECT_boardheart = `SELECT * FROM board_heart WHERE board_number =? AND user_id = ?`;
+const DELETE_boardheart = `DELETE FROM board_heart WHERE board_number=? AND user_id = ?`;
+const SELECT_boardheartCount = `SELECT count(*) count FROM board_heart WHERE board_number =?`;
+const INSERT_boardheart = `INSERT INTO board_heart VALUES(null,?,?)`;
 
-const SELECT_commentheart = `SELECT comment_heart FROM comment WHERE comment_number =?`;
-const UPDATE_commentheart = `UPDATE comment SET comment_heart = ? WHERE comment_number =?`;
+// comment heart
+const SELECT_commentheart = `SELECT * FROM comment_heart WHERE comment_number =? AND board_number=? ANd user_id = ?`;
+const DELETE_commentheart = `DELETE FROM comment_heart WHERE comment_number=? AND board_number =? ANd user_id = ?`;
+const SELECT_commentheartCount = `SELECT count(*) count FROM comment_heart WHERE comment_number =? AND board_number =?`;
+const INSERT_commentheart = `INSERT INTO comment_heart VALUES(null,?,?,?)`;
 
 module.exports = {
     INSERT_all,
     INSERT_board,
+    INSERT_boardheart,
+    INSERT_commentheart,
     SELECT_userid,
     SELECT_email,
     SELECT_password,
@@ -47,10 +55,12 @@ module.exports = {
     SELECT_boardnum,
     SELECT_boardnumber,
     SELECT_boardheart,
+    SELECT_boardheartCount,
     SELECT_commentheart,
+    SELECT_commentheartCount,
     UPDATE_userid,
-    UPDATE_boardheart,
-    UPDATE_commentheart,
     UPDATE_password,
     DELETE_userid,
+    DELETE_boardheart,
+    DELETE_commentheart,
 };
