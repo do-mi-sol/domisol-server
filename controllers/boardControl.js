@@ -54,7 +54,7 @@ module.exports = {
 
     boardDetail: async (req, res, next) => {
         try {
-            const board_number = req.params.board_number;
+            const board_number = req.body.board_number;
             const [[detail]] = await pool.query(SQL.SELECT_boardnumber, board_number);
             req.detail = {
                 detail,

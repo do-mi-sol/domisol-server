@@ -27,7 +27,7 @@ router.post("/write", verifyToken, upload.single("file"), write, (req, res) => {
  * @method GET
  * @summary BoardDetail
  */
-router.get("/board-detail/:board_number", boardDetail, (req, res) => {
+router.get("/detail", boardDetail, (req, res) => {
     res.json(myResponse(true, "detail 성공", "data", req.detail));
 });
 
