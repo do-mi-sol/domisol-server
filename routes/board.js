@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const upload = require("../config/etc/etc_config").upload;
-const { verifyToken } = require("../controllers/tokenControl.js");
+
+const { verifyToken } = require("../controllers/tokenControl");
 const { view, write, boardDetail, like } = require("../controllers/boardControl");
 
 const myResponse = require("../utils/myResponse");

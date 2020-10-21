@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
-const cors = require("cors");
+
+let port = process.env.PORT || 9001;
 
 //middleware
 app.use(express.json());
@@ -10,11 +11,9 @@ app.use(express.urlencoded({ extended: true }));
 const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
 const userRouter = require("./routes/user");
-app.use("/api/user", cors(), userRouter);
+app.use("/api/user", userRouter);
 const boardRouter = require("./routes/board");
 app.use("/api/board/", boardRouter);
 
 //start the server
-app.listen(3001, () => {
-    console.log("도미솔 웹 서버  ->  " + "http://localhost:3001");
-});
+app.listen(port);
