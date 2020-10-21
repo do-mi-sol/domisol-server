@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 
 let port = process.env.PORT || 9001;
 
@@ -11,7 +12,7 @@ app.use(express.urlencoded({ extended: true }));
 const indexRouter = require("./routes/index");
 app.use("/", indexRouter);
 const userRouter = require("./routes/user");
-app.use("/api/user", userRouter);
+app.use("/api/user", cors(), userRouter);
 const boardRouter = require("./routes/board");
 app.use("/api/board/", boardRouter);
 const commentRouter = require("./routes/comment");
