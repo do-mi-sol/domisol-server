@@ -15,7 +15,6 @@ module.exports = {
 
             req.board = {
                 boards: boardData,
-                currentPage,
                 numOfData: numOfData.count,
             };
             next();
