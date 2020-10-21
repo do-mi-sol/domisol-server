@@ -20,8 +20,8 @@ module.exports = {
             const maxPage = Math.ceil(numOfData.count / limit);
             const [boardData] = await pool.query(SQL.SELECT_boardlimit, [skip, skip, limit]);
             let searchData = [];
-            for (var i = 0; i < boardData[1].length; i++) {
-                searchData.push(boardData[1][i]);
+            for (var i = 0; i < boardData.length; i++) {
+                searchData.push(boardData[i]);
             }
             req.board = {
                 boards: searchData,

@@ -33,6 +33,21 @@ const SELECT_boardlimit = `SELECT * FROM ( SELECT A.* , @rownum:=@rownum +1 AS c
         ) AS A
         ORDER BY A.board_date DESC LIMIT ?,?) AS B;`;
 const UPDATE_boardviews = `UPDATE board SET board_views =? WHERE board_number = ?`;
+
+`SELECT * FROM ( SELECT A.* , @rownum:=@rownum +1 AS count
+    FROM (
+         SELECT board.board_title,
+                board.board_box,
+                board.board_date,
+                board.board_filename,
+                board.board_views,
+                user.user_id,
+                user.name,
+                user.gender
+        FROM board LEFT JOIN user ON (board.user_id = user.user_id)
+        JOIN (SELECT @rownum:=0) R
+        ) AS A
+        ORDER BY A.board_date DESC LIMIT 0,3) AS B`;
 // boart insert content
 const INSERT_board = `INSERT INTO board VALUES (null,?,?,?,NOW(),?,?,?)`;
 
