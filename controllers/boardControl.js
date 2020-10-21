@@ -19,21 +19,22 @@ module.exports = {
                 numOfData: numOfData.count,
             };
             next();
-        } catch (viewERR) {
-            return errorMsg(res, viewERR.message);
+        } catch (boardERR) {
+            return errorMsg(res, boardERR.message);
         }
     },
 
     write: async (req, res, next) => {
+        const { user_id } = req.user;
+        const { board_title, board_box, board_filename } = req.body;
+
+        if (board_title == "" || board_box == "" || board_filename == "") {
+            return errorMsg(res, "채워지지 않은 정보가 있습니다.");
+        }
+
         try {
-            const { user_id, name, gender } = req.user;
-            const { title, contents } = req.body;
-            if (title == "" || contents == "" || req.file.filename == "") {
-                return errorMsg(res, "채워지지 않은 정보가 있습니다.");
-            }
-            const file = "/upload/" + req.file.filename;
-            const data = [user_id, title, contents, file, 0, 0];
-            await pool.query(SQL.INSERT_board, data);
+            const file = "/upload/" + board_filename;
+            await pool.query(SQL.INSERT_board, [user_id, board_title, board_box, file, 0]);
             next();
         } catch (writeERR) {
             return errorMsg(res, writeERR.message);
