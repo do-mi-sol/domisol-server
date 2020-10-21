@@ -14,7 +14,7 @@ app.use("/", indexRouter);
 const userRouter = require("./routes/user");
 app.use("/api/user", cors(), userRouter);
 const boardRouter = require("./routes/board");
-app.use("/api/board", boardRouter);
+app.use("/api/board", cors(), boardRouter);
 const commentRouter = require("./routes/comment");
 app.use("/api/comment", cors(), commentRouter);
 
