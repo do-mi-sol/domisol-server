@@ -20,7 +20,7 @@ const SELECT_allboard = "SELECT board_number, board_title, name, gender, board_d
 const SELECT_countboard = "SELECT count(*) count FROM board;";
 const SELECT_boardnum = "SET @rownum:= ?;";
 const SELECT_boardlimit =
-    "SELECT @rownum:=@rownum+1 as number, board_title, board_box,board_date, board_filename, board_views FROM board INNER JOIN user ON board.user_id = user.user_id ORDER BY board_date DESC LIMIT ?,?";
+    "SELECT @rownum:=@rownum+1 as number, board_title, board_box,board_date, board_filename, board_views, user_id, user.name, user.gender FROM board INNER JOIN user ON board.user_id = user.user_id ORDER BY board_date DESC LIMIT ?,?";
 const UPDATE_boardviews = `UPDATE board SET board_views =? WHERE board_number = ?`;
 // boart insert content
 const INSERT_board = `INSERT INTO board VALUES (null,?,?,?,NOW(),?,?,?)`;
