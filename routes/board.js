@@ -11,7 +11,7 @@ const myResponse = require("../utils/myResponse");
  * @method GET
  * @summary MainBoard
  */
-router.get("/main", view, async (req, res) => {
+router.get("/", view, async (req, res) => {
     res.status(200).json(myResponse(true, "mainpage", "board", req.board));
 });
 
@@ -31,15 +31,12 @@ router.get("/board-detail/:board_number", boardDetail, (req, res) => {
     res.json(myResponse(true, "detail 성공", "data", req.detail));
 });
 
+/**
+ * @method GET
+ * @summary LIKE
+ */
 router.get("/like", like, (req, res) => {
     res.json(myResponse(true, "like 성공", "data", req.heart));
-});
-/**
- * @method PUT
- * @summary WriteModify
- */
-router.put("/writemodify", (req, res) => {
-    res.json(myResponse(true, "writemodify 성공"));
 });
 
 module.exports = router;
