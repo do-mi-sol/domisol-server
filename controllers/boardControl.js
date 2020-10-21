@@ -1,51 +1,40 @@
 const pool = require("../config/database/db_connect");
 const SQL = require("../config/database/db_sql");
-const multer = require("multer");
-const fs = require("fs");
+
 const { errorMsg } = require("../utils/myMessage");
-const { search } = require("../routes/user");
 
 module.exports = {
-    view: async (req, res, next) => {
+    board: async (req, res, next) => {
         try {
-            // 현재 페이지 받아옴
-            const currentPage = Math.max(1, parseInt(req.body.currentPage));
-            // 페이지에 보여줄 게시글의 수
-            const limit = Math.max(1, parseInt(req.body.limit));
-            // 건너뛸 데이터, 2페이지 클릭 시 limit만큼의 개시글을 제외하고 다음 5개의 글만 보여주도록 한다.
+            const currentPage = req.body.currentPage;
+            const limit = req.body.limit;
+
             const skip = (currentPage - 1) * limit;
-            // 전체 데이터의 개수
             const [[numOfData]] = await pool.query(SQL.SELECT_countboard);
-            // 전체 페이지 수
-            const maxPage = Math.ceil(numOfData.count / limit);
             const [boardData] = await pool.query(SQL.SELECT_boardlimit, [skip, skip, limit]);
-            let searchData = [];
-            for (var i = 0; i < boardData.length; i++) {
-                searchData.push(boardData[i]);
-            }
+
             req.board = {
-                boards: searchData,
+                boards: boardData,
                 currentPage,
                 numOfData: numOfData.count,
-                maxPage,
-                limit,
             };
             next();
-        } catch (viewERR) {
-            return errorMsg(res, viewERR.message);
+        } catch (boardERR) {
+            return errorMsg(res, boardERR.message);
         }
     },
 
     write: async (req, res, next) => {
+        const { user_id } = req.user;
+        const { board_title, board_box, board_filename } = req.body;
+
+        if (board_title == "" || board_box == "" || board_filename == "") {
+            return errorMsg(res, "채워지지 않은 정보가 있습니다.");
+        }
+
         try {
-            const { user_id, name, gender } = req.user;
-            const { title, contents } = req.body;
-            if (title == "" || contents == "" || req.file.filename == "") {
-                return errorMsg(res, "채워지지 않은 정보가 있습니다.");
-            }
-            const file = "/upload/" + req.file.filename;
-            const data = [user_id, title, contents, file, 0, 0];
-            await pool.query(SQL.INSERT_board, data);
+            const file = "/upload/" + board_filename;
+            await pool.query(SQL.INSERT_board, [user_id, board_title, board_box, file, 0]);
             next();
         } catch (writeERR) {
             return errorMsg(res, writeERR.message);
@@ -77,15 +66,27 @@ module.exports = {
                     variable.userId,
                 ]);
                 if (searchHeart) {
-                    await pool.query(SQL.DELETE_boardheart, [variable.board_number, variable.userId]);
-                    const [[heartCount]] = await pool.query(SQL.SELECT_boardheartCount, variable.board_number);
+                    await pool.query(SQL.DELETE_boardheart, [
+                        variable.board_number,
+                        variable.userId,
+                    ]);
+                    const [[heartCount]] = await pool.query(
+                        SQL.SELECT_boardheartCount,
+                        variable.board_number
+                    );
                     req.heart = {
                         boardHeart: count.count,
                     };
                     next();
                 } else {
-                    await pool.query(SQL.INSERT_boardheart, [variable.board_number, variable.userId]);
-                    const [[heartCount]] = await pool.query(SQL.SELECT_boardheartCount, variable.board_number);
+                    await pool.query(SQL.INSERT_boardheart, [
+                        variable.board_number,
+                        variable.userId,
+                    ]);
+                    const [[heartCount]] = await pool.query(
+                        SQL.SELECT_boardheartCount,
+                        variable.board_number
+                    );
                     req.heart = {
                         boardHeart: heartCount.count,
                     };

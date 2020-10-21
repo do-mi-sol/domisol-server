@@ -13,14 +13,16 @@ const UPDATE_password = "UPDATE user SET password =? WHERE user_id = ?;";
 
 const DELETE_userid = "DELETE FROM user WHERE user_id = ?;";
 
-const SELECT_allboard = "SELECT board_number, board_title, name, gender, board_date, board_views FROM board";
+const SELECT_allboard =
+    "SELECT board_number, board_title, name, gender, board_date, board_views FROM board";
 
 //board
 // board view & numbering
 const SELECT_countboard = "SELECT count(*) count FROM board;";
 const SELECT_boardlimit = `SELECT * FROM ( SELECT A.* , @rownum:=@rownum +1 AS count
     FROM (
-         SELECT board.board_title,
+         SELECT board.board_number,
+                board.board_title,
                 board.board_box,
                 board.board_date,
                 board.board_filename,
