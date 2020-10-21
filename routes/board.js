@@ -8,10 +8,10 @@ const { view, write, boardDetail, like } = require("../controllers/boardControl"
 const myResponse = require("../utils/myResponse");
 
 /**
- * @method GET
+ * @method post
  * @summary MainBoard
  */
-router.get("/", view, async (req, res) => {
+router.post("/", view, async (req, res) => {
     res.status(200).json(myResponse(true, "mainpage", "board", req.board));
 });
 
@@ -24,18 +24,18 @@ router.post("/write", verifyToken, upload.single("file"), write, (req, res) => {
 });
 
 /**
- * @method GET
+ * @method post
  * @summary BoardDetail
  */
-router.get("/detail", boardDetail, (req, res) => {
+router.post("/detail", boardDetail, (req, res) => {
     res.json(myResponse(true, "detail 성공", "data", req.detail));
 });
 
 /**
- * @method GET
+ * @method post
  * @summary LIKE
  */
-router.get("/like", like, (req, res) => {
+router.post("/like", like, (req, res) => {
     res.json(myResponse(true, "like 성공", "data", req.heart));
 });
 
