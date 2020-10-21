@@ -32,7 +32,7 @@ module.exports = {
             };
             next();
         } catch (viewERR) {
-           return errorMsg(400, viewERR.message);
+            return errorMsg(400, viewERR.message);
         }
     },
 
@@ -67,7 +67,6 @@ module.exports = {
         try {
             const variable = req.body.variable;
             if (variable.board_number && !variable.comment_number) {
-                const sql = `SELECT * FROM board_heart WHERE board_number =? AND user_id = ?`;
                 const [[searchHeart]] = await pool.query(SQL.SELECT_boardheart, [
                     variable.board_number,
                     variable.userId,
@@ -99,7 +98,10 @@ module.exports = {
                         variable.board_number,
                         variable.userId,
                     ]);
-\                    const [[heartCount]] = await pool.query(SQL.SELECT_commentheartCount, [variable.comment_number, variable.board_number]);
+                    const [[heartCount]] = await pool.query(SQL.SELECT_commentheartCount, [
+                        variable.comment_number,
+                        variable.board_number,
+                    ]);
                     req.heart = {
                         commentHeart: heartCount.count,
                     };
@@ -110,7 +112,10 @@ module.exports = {
                         variable.board_number,
                         variable.userId,
                     ]);
-                    const [[heartCount]] = await pool.query(SQL.SELECT_commentheartCount, [variable.comment_number, variable.board_number]);
+                    const [[heartCount]] = await pool.query(SQL.SELECT_commentheartCount, [
+                        variable.comment_number,
+                        variable.board_number,
+                    ]);
                     req.heart = {
                         commentHeart: heartCount.count,
                     };
