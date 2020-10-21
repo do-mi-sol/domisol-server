@@ -3,6 +3,7 @@ const SQL = require("../config/database/db_sql");
 const multer = require("multer");
 const fs = require("fs");
 const { errorMsg } = require("../utils/myMessage");
+const { search } = require("../routes/user");
 
 module.exports = {
     view: async (req, res, next) => {
@@ -31,7 +32,7 @@ module.exports = {
             };
             next();
         } catch (viewERR) {
-            errorMsg(res, 400, viewERR.message);
+            errorMsg(400, viewERR.message);
             return console.log(viewERR);
         }
     },
@@ -42,12 +43,96 @@ module.exports = {
             const { user_id, email, name, gender } = req.user;
             const { title, contents } = req.body;
             const file = "/upload/" + req.file.filename;
-            const sql = `INSERT INTO board VALUES (null,?,?,NOW(),?,?,?,?,?,?)`;
             const data = [title, contents, file, 0, 0, user_id, name, gender];
-            await pool.query(sql, data);
+            await pool.query(SQL.INSERT_board, data);
             next();
         } catch (writeERR) {
-            errorMsg(res, 400, writeERR.message);
+            errorMsg(400, writeERR.message);
+        }
+    },
+
+    boardDetail: async (req, res, next) => {
+        try {
+            const board_number = req.params.board_number;
+            const [[detail]] = await pool.query(SQL.SELECT_boardnumber, board_number);
+            req.detail = {
+                detail,
+            };
+            next();
+        } catch (boardDetailERR) {
+            errorMsg(400, boardDetailERR.message);
+        }
+    },
+
+    like: async (req, res, next) => {
+        // 좋아요를 누른 버튼이 content인지, comment인지 client에서 받아온다.
+        // const variable = req.body.variable;
+        try {
+            const variable = {
+                comment_number: 1,
+                board_number: 2,
+                userId: "test3",
+            };
+            if (variable.board_number && !variable.comment_number) {
+                const sql = `SELECT * FROM board_heart WHERE board_number =? AND user_id = ?`;
+                const [[searchHeart]] = await pool.query(sql, [variable.board_number, variable.userId]);
+                if (searchHeart) {
+                    const delSql = `DELETE FROM board_heart WHERE board_number=? AND user_id = ?`;
+                    const del = await pool.query(delSql, [variable.board_number, variable.userId]);
+                    const countSql = `SELECT count(*) count FROM board_heart WHERE board_number =?`;
+                    const [[heartCount]] = await pool.query(countSql, variable.board_number);
+                    req.heart = {
+                        boardHeart: count.count,
+                    };
+                    next();
+                } else {
+                    const insSql = `INSERT INTO board_heart VALUES(null,?,?)`;
+                    const ins = await pool.query(insSql, [variable.board_number, variable.userId]);
+                    const countSql = `SELECT count(*) count FROM board_heart WHERE board_number =?`;
+                    const [[heartCount]] = await pool.query(countSql, variable.board_number);
+                    req.heart = {
+                        boardHeart: heartCount.count,
+                    };
+                    next();
+                }
+            } else {
+                const sql = `SELECT * FROM comment_heart WHERE comment_number =? AND board_number=? ANd user_id = ?`;
+                const [[searchHeart]] = await pool.query(sql, [
+                    variable.comment_number,
+                    variable.board_number,
+                    variable.userId,
+                ]);
+                if (searchHeart) {
+                    const delSql = `DELETE FROM comment_heart WHERE comment_number=? AND board_number =? ANd user_id = ?`;
+                    const del = await pool.query(delSql, [
+                        variable.comment_number,
+                        variable.board_number,
+                        variable.userId,
+                    ]);
+                    const countSql = `SELECT count(*) count FROM comment_heart WHERE comment_number =? AND board_number =?`;
+                    const [[heartCount]] = await pool.query(countSql, [variable.comment_number, variable.board_number]);
+                    req.heart = {
+                        commentHeart: heartCount.count,
+                    };
+                    next();
+                } else {
+                    const insSql = `INSERT INTO comment_heart VALUES(null,?,?,?)`;
+                    const ins = await pool.query(insSql, [
+                        variable.comment_number,
+                        variable.board_number,
+                        variable.userId,
+                    ]);
+                    const countSql = `SELECT count(*) count FROM comment_heart WHERE comment_number =? AND board_number =?`;
+                    const [[heartCount]] = await pool.query(countSql, [variable.comment_number, variable.board_number]);
+                    req.heart = {
+                        commentHeart: heartCount.count,
+                    };
+                    next();
+                }
+            }
+        } catch (likeERR) {
+            errorMsg(400, likeERR.message);
+            console.log(likeERR);
         }
     },
 };
