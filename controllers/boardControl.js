@@ -132,6 +132,7 @@ module.exports = {
             }
         } catch (likeERR) {
             errorMsg(400, likeERR.message);
+            console.log(likeERR);
         }
     },
 };
