@@ -44,7 +44,7 @@ module.exports = {
                 return errorMsg(res, "채워지지 않은 정보가 있습니다.");
             }
             const file = "/upload/" + req.file.filename;
-            const data = [title, contents, file, 0, 0, user_id, name, gender];
+            const data = [user_id, title, contents, file, 0, 0];
             await pool.query(SQL.INSERT_board, data);
             next();
         } catch (writeERR) {
