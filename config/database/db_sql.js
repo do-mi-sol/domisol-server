@@ -13,8 +13,7 @@ const UPDATE_password = "UPDATE user SET password =? WHERE user_id = ?;";
 
 const DELETE_userid = "DELETE FROM user WHERE user_id = ?;";
 
-const SELECT_allboard =
-    "SELECT board_number, board_title, name, gender, board_date, board_views FROM board";
+const SELECT_allboard = "SELECT board_number, board_title, name, gender, board_date, board_views FROM board";
 
 //board
 // board view & numbering
@@ -23,6 +22,7 @@ const SELECT_boardnum = "SET @rownum:= ?;";
 const SELECT_boardlimit =
     "SELECT @rownum:=@rownum+1 as number, board_title, board_date FROM board ORDER BY board_date DESC LIMIT ?,?";
 
+const UPDATE_boardviews = `UPDATE board SET board_views =? WHERE board_number = ?`;
 // boart insert content
 const INSERT_board = `INSERT INTO board VALUES (null,?,?,NOW(),?,?,?,?,?,?)`;
 
@@ -72,6 +72,7 @@ module.exports = {
     SELECT_commentheartCount,
     UPDATE_userid,
     UPDATE_password,
+    UPDATE_boardviews,
     DELETE_userid,
     DELETE_boardheart,
     DELETE_commentheart,

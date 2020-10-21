@@ -54,8 +54,11 @@ module.exports = {
 
     boardDetail: async (req, res, next) => {
         try {
-            const board_number = req.body.board_number;
+            const { board_number } = req.body;
             const [[detail]] = await pool.query(SQL.SELECT_boardnumber, board_number);
+            let views = detail.board_views;
+            views++;
+            await pool.query(SQL.UPDATE_boardviews, [views, board_number]);
             req.detail = {
                 detail,
             };
