@@ -18,7 +18,7 @@ module.exports = {
             const [[numOfData]] = await pool.query(SQL.SELECT_countboard);
             // 전체 페이지 수
             const maxPage = Math.ceil(numOfData.count / limit);
-            const [boardData] = await pool.query(SQL.SELECT_boardnum + SQL.SELECT_boardlimit, [skip, skip, limit]);
+            const [boardData] = await pool.query(SQL.SELECT_boardlimit, [skip, skip, limit]);
             let searchData = [];
             for (var i = 0; i < boardData[1].length; i++) {
                 searchData.push(boardData[1][i]);

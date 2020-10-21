@@ -18,9 +18,20 @@ const SELECT_allboard = "SELECT board_number, board_title, name, gender, board_d
 //board
 // board view & numbering
 const SELECT_countboard = "SELECT count(*) count FROM board;";
-const SELECT_boardnum = "SET @rownum:= ?;";
-const SELECT_boardlimit =
-    "SELECT @rownum:=@rownum+1 as number, board_title, board_box,board_date, board_filename, board_views, user.user_id, user.name, user.gender FROM board LEFT JOIN user ON board.user_id = user.user_id ORDER BY board_date DESC LIMIT ?,?";
+const SELECT_boardlimit = `SELECT * FROM ( SELECT A.* , @rownum:=@rownum +1 AS count
+    FROM (
+         SELECT board.board_title,
+                board.board_box,
+                board.board_date,
+                board.board_filename,
+                board.board_views,
+                user.user_id,
+                user.name,
+                user.gender
+        FROM board LEFT JOIN user ON (board.user_id = user.user_id)
+        JOIN (SELECT @rownum:=?) R
+        ) AS A
+        ORDER BY A.board_date DESC LIMIT ?,?) AS B;`;
 const UPDATE_boardviews = `UPDATE board SET board_views =? WHERE board_number = ?`;
 // boart insert content
 const INSERT_board = `INSERT INTO board VALUES (null,?,?,?,NOW(),?,?,?)`;
@@ -61,7 +72,6 @@ module.exports = {
     SELECT_allboard,
     SELECT_countboard,
     SELECT_boardlimit,
-    SELECT_boardnum,
     SELECT_allcomment,
     DELETE_comment,
     SELECT_boardnumber,
