@@ -3,7 +3,7 @@ const router = express.Router();
 const upload = require("../config/etc/etc_config").upload;
 
 const { verifyToken } = require("../controllers/tokenControl");
-const { view, write, boardDetail, like } = require("../controllers/boardControl");
+const { board, write, boardDetail, like } = require("../controllers/boardControl");
 
 const myResponse = require("../utils/myResponse");
 
@@ -11,7 +11,7 @@ const myResponse = require("../utils/myResponse");
  * @method post
  * @summary MainBoard
  */
-router.post("/", view, async (req, res) => {
+router.post("/", board, (req, res) => {
     res.status(200).json(myResponse(true, "mainpage", "board", req.board));
 });
 
