@@ -32,21 +32,23 @@ module.exports = {
             };
             next();
         } catch (viewERR) {
-            return errorMsg(400, viewERR.message);
+            return errorMsg(res, viewERR.message);
         }
     },
 
     write: async (req, res, next) => {
         try {
-            // 토큰 payload
-            const { user_id, email, name, gender } = req.user;
+            const { user_id, name, gender } = req.user;
             const { title, contents } = req.body;
+            if (title == "" || contents == "" || req.file.filename == "") {
+                return errorMsg(res, "채워지지 않은 정보가 있습니다.");
+            }
             const file = "/upload/" + req.file.filename;
             const data = [title, contents, file, 0, 0, user_id, name, gender];
             await pool.query(SQL.INSERT_board, data);
             next();
         } catch (writeERR) {
-            return errorMsg(400, writeERR.message);
+            return errorMsg(res, writeERR.message);
         }
     },
 
@@ -59,7 +61,7 @@ module.exports = {
             };
             next();
         } catch (boardDetailERR) {
-            return errorMsg(400, boardDetailERR.message);
+            return errorMsg(res, boardDetailERR.message);
         }
     },
 
@@ -123,7 +125,7 @@ module.exports = {
                 }
             }
         } catch (likeERR) {
-            return errorMsg(400, likeERR.message);
+            return errorMsg(res, likeERR.message);
         }
     },
 };
