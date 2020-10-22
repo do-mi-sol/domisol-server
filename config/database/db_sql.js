@@ -20,7 +20,8 @@ const SELECT_allboard = "SELECT board_number, board_title, name, gender, board_d
 const SELECT_countboard = "SELECT count(*) count FROM board;";
 const SELECT_boardlimit = `SELECT * , @rownum:=@rownum +1 AS count FROM ( SELECT A.*
     FROM (
-         SELECT board.board_title,
+         SELECT board.board_number,
+                board.board_title,
                 board.board_box,
                 board.board_date,
                 board.board_filename,
