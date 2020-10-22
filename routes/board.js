@@ -3,7 +3,7 @@ const router = express.Router();
 const upload = require("../config/etc/etc_config").upload;
 
 const { verifyToken } = require("../controllers/tokenControl");
-const { board, write, boardDetail, like } = require("../controllers/boardControl");
+const { board, write, boardDetail, like, best } = require("../controllers/boardControl");
 
 const myResponse = require("../utils/myResponse");
 
@@ -13,6 +13,14 @@ const myResponse = require("../utils/myResponse");
  */
 router.post("/", board, (req, res) => {
     res.status(200).json(myResponse(true, "mainpage", "board", req.board));
+});
+
+/**
+ * @method post
+ * @summary Best
+ */
+router.post("/Best", best, (req, res) => {
+    res.json(myResponse(true, "best 성공", "data", req.board));
 });
 
 /**

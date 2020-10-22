@@ -13,13 +13,12 @@ const UPDATE_password = "UPDATE user SET password =? WHERE user_id = ?;";
 
 const DELETE_userid = "DELETE FROM user WHERE user_id = ?;";
 
-const SELECT_allboard =
-    "SELECT board_number, board_title, name, gender, board_date, board_views FROM board";
+const SELECT_allboard = "SELECT board_number, board_title, name, gender, board_date, board_views FROM board";
 
 //board
 // board view & numbering
 const SELECT_countboard = "SELECT count(*) count FROM board;";
-const SELECT_boardlimit = `SELECT * FROM ( SELECT A.* , @rownum:=@rownum +1 AS count
+const SELECT_boardlimit = `SELECT * , @rownum:=@rownum +1 AS count FROM ( SELECT A.*
     FROM (
          SELECT board.board_number,
                 board.board_title,
@@ -30,26 +29,10 @@ const SELECT_boardlimit = `SELECT * FROM ( SELECT A.* , @rownum:=@rownum +1 AS c
                 user.user_id,
                 user.name,
                 user.gender
-        FROM board LEFT JOIN user ON (board.user_id = user.user_id)
-        JOIN (SELECT @rownum:=?) R
-        ) AS A
-        ORDER BY A.board_date DESC LIMIT ?,?) AS B;`;
+        FROM board LEFT JOIN user ON (board.user_id = user.user_id) ORDER BY board.board_date
+        ) AS A, (SELECT @rownum:=0) R ) AS B ORDER BY count DESC LIMIT ?,?;`;
 const UPDATE_boardviews = `UPDATE board SET board_views =? WHERE board_number = ?`;
 
-`SELECT * FROM ( SELECT A.* , @rownum:=@rownum +1 AS count
-    FROM (
-         SELECT board.board_title,
-                board.board_box,
-                board.board_date,
-                board.board_filename,
-                board.board_views,
-                user.user_id,
-                user.name,
-                user.gender
-        FROM board LEFT JOIN user ON (board.user_id = user.user_id)
-        JOIN (SELECT @rownum:=0) R
-        ) AS A
-        ORDER BY A.board_date DESC LIMIT 0,3) AS B`;
 // boart insert content
 const INSERT_board = `INSERT INTO board VALUES (null,?,?,?,NOW(),?,?,?)`;
 
@@ -74,32 +57,48 @@ const DELETE_commentheart = `DELETE FROM comment_heart WHERE comment_number=? AN
 const SELECT_commentheartCount = `SELECT count(*) count FROM comment_heart WHERE comment_number =? AND board_number =?`;
 const INSERT_commentheart = `INSERT INTO comment_heart VALUES(null,?,?,?)`;
 
+// best board
+const SELECT_bestboard = `SELECT D.*, @rownum:=@rownum+1 AS count FROM (SELECT C.*, count(*) AS heartnum
+FROM (
+    SELECT
+           A.board_number,
+           A.board_title,
+           A.board_box, A.board_date,
+           A.board_filename,
+           A.board_views,
+           A.user_id
+    FROM board AS A INNER JOIN board_heart AS B ON (A.board_number = B.board_number)
+    WHERE A.board_date > CURDATE()
+    ) AS C,(SELECT @rownum:=0) R GROUP BY board_number ORDER BY heartnum
+) AS D ORDER BY count DESC LIMIT ?,?`;
+
 module.exports = {
     INSERT_all,
+    INSERT_allcomment,
     INSERT_board,
     INSERT_boardheart,
     INSERT_commentheart,
-    INSERT_allcomment,
-    SELECT_userid,
-    SELECT_email,
-    SELECT_password,
-    SELECT_userid_password,
-    SELECT_name_email,
-    SELECT_name_email_userid,
     SELECT_allboard,
-    SELECT_countboard,
-    SELECT_boardlimit,
     SELECT_allcomment,
-    DELETE_comment,
-    SELECT_boardnumber,
+    SELECT_bestboard,
     SELECT_boardheart,
     SELECT_boardheartCount,
+    SELECT_boardlimit,
+    SELECT_boardnumber,
     SELECT_commentheart,
     SELECT_commentheartCount,
-    UPDATE_userid,
-    UPDATE_password,
+    SELECT_countboard,
+    SELECT_email,
+    SELECT_name_email,
+    SELECT_name_email_userid,
+    SELECT_password,
+    SELECT_userid,
+    SELECT_userid_password,
     UPDATE_boardviews,
-    DELETE_userid,
+    UPDATE_password,
+    UPDATE_userid,
     DELETE_boardheart,
+    DELETE_comment,
     DELETE_commentheart,
+    DELETE_userid,
 };

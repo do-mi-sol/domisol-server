@@ -11,7 +11,7 @@ module.exports = {
 
             const skip = (currentPage - 1) * limit;
             const [[numOfData]] = await pool.query(SQL.SELECT_countboard);
-            const [boardData] = await pool.query(SQL.SELECT_boardlimit, [skip, skip, limit]);
+            const [boardData] = await pool.query(SQL.SELECT_boardlimit, [skip, limit]);
 
             req.board = {
                 boards: boardData,
@@ -66,27 +66,15 @@ module.exports = {
                     variable.userId,
                 ]);
                 if (searchHeart) {
-                    await pool.query(SQL.DELETE_boardheart, [
-                        variable.board_number,
-                        variable.userId,
-                    ]);
-                    const [[heartCount]] = await pool.query(
-                        SQL.SELECT_boardheartCount,
-                        variable.board_number
-                    );
+                    await pool.query(SQL.DELETE_boardheart, [variable.board_number, variable.userId]);
+                    const [[heartCount]] = await pool.query(SQL.SELECT_boardheartCount, variable.board_number);
                     req.heart = {
                         boardHeart: count.count,
                     };
                     next();
                 } else {
-                    await pool.query(SQL.INSERT_boardheart, [
-                        variable.board_number,
-                        variable.userId,
-                    ]);
-                    const [[heartCount]] = await pool.query(
-                        SQL.SELECT_boardheartCount,
-                        variable.board_number
-                    );
+                    await pool.query(SQL.INSERT_boardheart, [variable.board_number, variable.userId]);
+                    const [[heartCount]] = await pool.query(SQL.SELECT_boardheartCount, variable.board_number);
                     req.heart = {
                         boardHeart: heartCount.count,
                     };
@@ -130,6 +118,24 @@ module.exports = {
             }
         } catch (likeERR) {
             return errorMsg(res, likeERR.message);
+        }
+    },
+
+    best: async (req, res, next) => {
+        try {
+            const currentPage = req.body.currentPage;
+            const limit = req.body.limit;
+            const skip = (currentPage - 1) * limit;
+            const [[numOfData]] = await pool.query(SQL.SELECT_countboard);
+            const [boardData] = await pool.query(SQL.SELECT_bestboard, [skip, limit]);
+            req.board = {
+                boards: boardData,
+                currentPage,
+                numOfData: numOfData.count,
+            };
+            next();
+        } catch (bestERR) {
+            return errorMsg(res, bestERR.message);
         }
     },
 };
