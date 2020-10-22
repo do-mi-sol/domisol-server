@@ -9,6 +9,7 @@ module.exports = {
 
         try {
             const [comment_data] = await pool.query(SQL.SELECT_allcomment, [board_number]);
+
             req.comment = comment_data;
             next();
         } catch (commentsERR) {

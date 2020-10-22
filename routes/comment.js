@@ -10,7 +10,7 @@ const myResponse = require("../utils/myResponse");
  * @method POST
  * @summary comment
  */
-router.post("/", verifyToken, comments, (req, res) => {
+router.post("/", comments, (req, res) => {
     res.status(201).json(
         myResponse(true, "comment 성공", "data", {
             comment: req.comment,
