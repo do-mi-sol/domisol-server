@@ -123,22 +123,15 @@ module.exports = {
 
     best: async (req, res, next) => {
         try {
-            const currentPage = Math.max(1, parseInt(req.body.currentPage));
-            const limit = Math.max(1, parseInt(req.body.limit));
+            const currentPage = req.body.currentPage;
+            const limit = req.body.limit;
             const skip = (currentPage - 1) * limit;
             const [[numOfData]] = await pool.query(SQL.SELECT_countboard);
-            const maxPage = Math.ceil(numOfData.count / limit);
             const [boardData] = await pool.query(SQL.SELECT_bestboard, [skip, limit]);
-            let searchData = [];
-            for (var i = 0; i < boardData.length; i++) {
-                searchData.push(boardData[i]);
-            }
             req.board = {
-                boards: searchData,
+                boards: boardData,
                 currentPage,
                 numOfData: numOfData.count,
-                maxPage,
-                limit,
             };
             next();
         } catch (bestERR) {
