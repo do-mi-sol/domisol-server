@@ -7,9 +7,10 @@ module.exports = {
     comments: async (req, res, next) => {
         const { board_number } = req.body;
 
+        if (board_number == "") return errorMsg(res, "게시판 번호가 없습니다.");
+
         try {
             const [comment_data] = await pool.query(SQL.SELECT_allcomment, [board_number]);
-
             req.comment = comment_data;
             next();
         } catch (commentsERR) {
