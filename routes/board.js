@@ -14,13 +14,6 @@ const myResponse = require("../utils/myResponse");
  * @summary MainBoard
  */
 router.post("/", board, (req, res) => {
-    upload(req, res, (err) => {
-        if (err instanceof multer.MulterError) {
-            return next(err);
-        } else if (err) {
-            return next(err);
-        }
-    });
     res.status(200).json(myResponse(true, "mainpage", "board", req.board));
 });
 
@@ -37,6 +30,13 @@ router.post("/Best", best, (req, res) => {
  * @summary Write
  */
 router.post("/write", verifyToken, write, (req, res) => {
+    upload(req, res, (err) => {
+        if (err instanceof multer.MulterError) {
+            return next(err);
+        } else if (err) {
+            return next(err);
+        }
+    });
     res.status(200).json(myResponse(true, "write"));
 });
 
