@@ -1,5 +1,8 @@
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+
+const { upload } = require("../config/etc/etc_config");
 
 const { verifyToken } = require("../controllers/tokenControl");
 const { board, write, boardDetail, like, best } = require("../controllers/boardControl");
@@ -11,6 +14,13 @@ const myResponse = require("../utils/myResponse");
  * @summary MainBoard
  */
 router.post("/", board, (req, res) => {
+    upload(req, res, (err) => {
+        if (err instanceof multer.MulterError) {
+            return next(err);
+        } else if (err) {
+            return next(err);
+        }
+    });
     res.status(200).json(myResponse(true, "mainpage", "board", req.board));
 });
 
