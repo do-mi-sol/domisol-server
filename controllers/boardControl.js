@@ -27,6 +27,7 @@ module.exports = {
     write: async (req, res, next) => {
         const { user_id } = req.user;
         const { board_title, board_box, board_filename } = req.body;
+        console.log(req.body);
 
         if (board_title == "" || board_box == "" || board_filename == "") {
             return errorMsg(res, "채워지지 않은 정보가 있습니다.");
@@ -66,15 +67,27 @@ module.exports = {
                     variable.userId,
                 ]);
                 if (searchHeart) {
-                    await pool.query(SQL.DELETE_boardheart, [variable.board_number, variable.userId]);
-                    const [[heartCount]] = await pool.query(SQL.SELECT_boardheartCount, variable.board_number);
+                    await pool.query(SQL.DELETE_boardheart, [
+                        variable.board_number,
+                        variable.userId,
+                    ]);
+                    const [[heartCount]] = await pool.query(
+                        SQL.SELECT_boardheartCount,
+                        variable.board_number
+                    );
                     req.heart = {
                         boardHeart: count.count,
                     };
                     next();
                 } else {
-                    await pool.query(SQL.INSERT_boardheart, [variable.board_number, variable.userId]);
-                    const [[heartCount]] = await pool.query(SQL.SELECT_boardheartCount, variable.board_number);
+                    await pool.query(SQL.INSERT_boardheart, [
+                        variable.board_number,
+                        variable.userId,
+                    ]);
+                    const [[heartCount]] = await pool.query(
+                        SQL.SELECT_boardheartCount,
+                        variable.board_number
+                    );
                     req.heart = {
                         boardHeart: heartCount.count,
                     };
