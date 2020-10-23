@@ -27,14 +27,15 @@ module.exports = {
     write: async (req, res, next) => {
         const { user_id } = req.user;
         const { board_title, board_box, board_filename } = req.body;
+        console.log(user_id);
         console.log(req.body);
 
-        if (board_title == "" || board_box == "" || board_filename == "") {
+        if (board_title == "" || board_box == "" || board_filename == null) {
             return errorMsg(res, "채워지지 않은 정보가 있습니다.");
         }
 
         try {
-            const file = "/upload/" + board_filename;
+            const file = "https://domisolserver.herokuapp.com/upload/" + board_filename;
             await pool.query(SQL.INSERT_board, [user_id, board_title, board_box, file, 0]);
             next();
         } catch (writeERR) {

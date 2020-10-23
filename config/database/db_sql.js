@@ -13,7 +13,8 @@ const UPDATE_password = "UPDATE user SET password =? WHERE user_id = ?;";
 
 const DELETE_userid = "DELETE FROM user WHERE user_id = ?;";
 
-const SELECT_allboard = "SELECT board_number, board_title, name, gender, board_date, board_views FROM board";
+const SELECT_allboard =
+    "SELECT board_number, board_title, name, gender, board_date, board_views FROM board";
 
 //board
 // board view & numbering
@@ -34,7 +35,7 @@ const SELECT_boardlimit = `SELECT * , @rownum:=@rownum +1 AS count FROM ( SELECT
 const UPDATE_boardviews = `UPDATE board SET board_views =? WHERE board_number = ?`;
 
 // boart insert content
-const INSERT_board = `INSERT INTO board VALUES (null,?,?,?,NOW(),?,?,?)`;
+const INSERT_board = `INSERT INTO board VALUES (null,?,?,?,NOW(),?,?);`;
 
 // board detail
 const SELECT_boardnumber = `SELECT * FROM board WHERE board_number = ?`;
