@@ -47,7 +47,7 @@ const SELECT_boardheartCount = `SELECT count(*) count FROM board_heart WHERE boa
 const INSERT_boardheart = `INSERT INTO board_heart VALUES(null,?,?)`;
 
 //comment
-const INSERT_allcomment = "INSERT INTO comment SET ?";
+const INSERT_allcomment = "INSERT INTO comment VALUES (null,?,?,?,NOW());";
 
 const SELECT_allcomment = "SELECT * FROM comment WHERE board_number = ?;";
 

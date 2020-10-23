@@ -1,7 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const multer = require("multer");
-
 const { upload } = require("../config/etc/etc_config");
 
 const { verifyToken } = require("../controllers/tokenControl");
@@ -30,13 +28,6 @@ router.post("/Best", best, (req, res) => {
  * @summary Write
  */
 router.post("/write", verifyToken, write, (req, res) => {
-    upload(req, res, (err) => {
-        if (err instanceof multer.MulterError) {
-            return next(err);
-        } else if (err) {
-            return next(err);
-        }
-    });
     res.status(200).json(myResponse(true, "write"));
 });
 

@@ -19,13 +19,13 @@ module.exports = {
     },
 
     comment_write: async (req, res, next) => {
-        const { comment_box, comment_date } = req.body;
+        const { board_number, comment_box } = req.body;
         const { user_id } = req.user;
 
         if (comment_box == "") return errorMsg(res, "댓글을 작성해주세요.");
 
         try {
-            await pool.query(SQL.INSERT_allcomment, [user_id, comment_box, comment_date]);
+            await pool.query(SQL.INSERT_allcomment, [board_number, user_id, comment_box]);
             next();
         } catch (writeERR) {
             errorMsg(res, writeERR);

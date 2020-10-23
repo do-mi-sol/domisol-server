@@ -22,7 +22,7 @@ router.post("/", comments, (req, res) => {
  * @method PUT
  * @summary comment_write
  */
-router.put("/write", verifyToken, comment_write, (req, res) => {
+router.post("/write", verifyToken, comment_write, (req, res) => {
     res.status(201).json(myResponse(true, "comment_write 성공"));
 });
 
