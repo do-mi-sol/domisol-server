@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const upload = require("../config/etc/etc_config").upload;
+const multer= require("multer")
 
 const { verifyToken } = require("../controllers/tokenControl");
 const { board, write, boardDetail, like, best } = require("../controllers/boardControl");
@@ -27,7 +28,13 @@ router.post("/Best", best, (req, res) => {
  * @method POST
  * @summary Write
  */
-router.post("/write", verifyToken, upload.single("file"), write, (req, res) => {
+router.post("/write", verifyToken, write, (req, res) => {
+    upload(req,res,function(err) {
+        if (err instanceof multer.MulterError) {
+          return next(err);
+        } else if (err) {
+          return next(err);
+        }
     res.status(200).json(myResponse(true, "write"));
 });
 
