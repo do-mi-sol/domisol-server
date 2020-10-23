@@ -35,7 +35,7 @@ module.exports = {
         }
 
         try {
-            const file = "https://domisolserver.herokuapp.com/upload/" + board_filename;
+            const file = "https://domisolserver.herokuapp.com/" + board_filename;
             await pool.query(SQL.INSERT_board, [user_id, board_title, board_box, file, 0]);
             next();
         } catch (writeERR) {

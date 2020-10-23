@@ -18,5 +18,7 @@ app.use("/api/board", cors(), boardRouter);
 const commentRouter = require("./routes/comment");
 app.use("/api/comment", cors(), commentRouter);
 
+app.use(express.static("upload"));
+
 //start the server
 app.listen(port);
