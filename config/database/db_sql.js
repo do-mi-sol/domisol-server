@@ -38,7 +38,7 @@ const UPDATE_boardviews = `UPDATE board SET board_views =? WHERE board_number = 
 const INSERT_board = `INSERT INTO board VALUES (null,?,?,?,NOW(),?,?);`;
 
 // board detail
-const SELECT_boardnumber = `SELECT * FROM board WHERE board_number = ?`;
+const SELECT_boardnumber = "SELECT * FROM board WHERE board_number = ?";
 
 // board heart
 const SELECT_boardheart = `SELECT * FROM board_heart WHERE board_number =? AND user_id = ?`;

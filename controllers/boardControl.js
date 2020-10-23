@@ -59,81 +59,99 @@ module.exports = {
         }
     },
 
-    like: async (req, res, next) => {
+    boardHeart: async (req, res, next) => {
+        const { board_number } = req.body;
+        const { user_id } = req.user;
+        const [board_heart] = await pool.query(SQL.SELECT_boardnumber, board_number);
+
         try {
-            const variable = req.body.variable;
-            if (variable.board_number && !variable.comment_number) {
-                const [[searchHeart]] = await pool.query(SQL.SELECT_boardheart, [
-                    variable.board_number,
-                    variable.userId,
-                ]);
-                if (searchHeart) {
-                    await pool.query(SQL.DELETE_boardheart, [
-                        variable.board_number,
-                        variable.userId,
-                    ]);
-                    const [[heartCount]] = await pool.query(
-                        SQL.SELECT_boardheartCount,
-                        variable.board_number
-                    );
-                    req.heart = {
-                        boardHeart: count.count,
-                    };
-                    next();
-                } else {
-                    await pool.query(SQL.INSERT_boardheart, [
-                        variable.board_number,
-                        variable.userId,
-                    ]);
-                    const [[heartCount]] = await pool.query(
-                        SQL.SELECT_boardheartCount,
-                        variable.board_number
-                    );
-                    req.heart = {
-                        boardHeart: heartCount.count,
-                    };
-                    next();
-                }
-            } else {
-                const [[searchHeart]] = await pool.query(SQL.SELECT_commentheart, [
-                    variable.comment_number,
-                    variable.board_number,
-                    variable.userId,
-                ]);
-                if (searchHeart) {
-                    await pool.query(SQL.DELETE_commentheart, [
-                        variable.comment_number,
-                        variable.board_number,
-                        variable.userId,
-                    ]);
-                    const [[heartCount]] = await pool.query(SQL.SELECT_commentheartCount, [
-                        variable.comment_number,
-                        variable.board_number,
-                    ]);
-                    req.heart = {
-                        commentHeart: heartCount.count,
-                    };
-                    next();
-                } else {
-                    await pool.query(SQL.INSERT_commentheart, [
-                        variable.comment_number,
-                        variable.board_number,
-                        variable.userId,
-                    ]);
-                    const [[heartCount]] = await pool.query(SQL.SELECT_commentheartCount, [
-                        variable.comment_number,
-                        variable.board_number,
-                    ]);
-                    req.heart = {
-                        commentHeart: heartCount.count,
-                    };
-                    next();
-                }
+            if (board_heart[0].user_id == user_id) return errorMsg(res, "이미 누른 하트입니다.");
+            else {
+                await pool.query(SQL.INSERT_boardheart, [board_number, user_id]);
+                const [data] = await pool.query(SQL.SELECT_boardnumber, board_number);
+                req.heart = data.length;
+                next();
             }
-        } catch (likeERR) {
-            return errorMsg(res, likeERR.message);
+        } catch (boardLikeERR) {
+            return errorMsg(res, boardLikeERR.message);
         }
     },
+
+    // like: async (req, res, next) => {
+    //     try {
+    //         const variable = req.body.variable;
+    //         if (variable.board_number && !variable.comment_number) {
+    //             const [[searchHeart]] = await pool.query(SQL.SELECT_boardheart, [
+    //                 variable.board_number,
+    //                 variable.userId,
+    //             ]);
+    //             if (searchHeart) {
+    //                 await pool.query(SQL.DELETE_boardheart, [
+    //                     variable.board_number,
+    //                     variable.userId,
+    //                 ]);
+    //                 const [[heartCount]] = await pool.query(
+    //                     SQL.SELECT_boardheartCount,
+    //                     variable.board_number
+    //                 );
+    //                 req.heart = {
+    //                     boardHeart: count.count,
+    //                 };
+    //                 next();
+    //             } else {
+    //                 await pool.query(SQL.INSERT_boardheart, [
+    //                     variable.board_number,
+    //                     variable.userId,
+    //                 ]);
+    //                 const [[heartCount]] = await pool.query(
+    //                     SQL.SELECT_boardheartCount,
+    //                     variable.board_number
+    //                 );
+    //                 req.heart = {
+    //                     boardHeart: heartCount.count,
+    //                 };
+    //                 next();
+    //             }
+    //         } else {
+    //             const [[searchHeart]] = await pool.query(SQL.SELECT_commentheart, [
+    //                 variable.comment_number,
+    //                 variable.board_number,
+    //                 variable.userId,
+    //             ]);
+    //             if (searchHeart) {
+    //                 await pool.query(SQL.DELETE_commentheart, [
+    //                     variable.comment_number,
+    //                     variable.board_number,
+    //                     variable.userId,
+    //                 ]);
+    //                 const [[heartCount]] = await pool.query(SQL.SELECT_commentheartCount, [
+    //                     variable.comment_number,
+    //                     variable.board_number,
+    //                 ]);
+    //                 req.heart = {
+    //                     commentHeart: heartCount.count,
+    //                 };
+    //                 next();
+    //             } else {
+    //                 await pool.query(SQL.INSERT_commentheart, [
+    //                     variable.comment_number,
+    //                     variable.board_number,
+    //                     variable.userId,
+    //                 ]);
+    //                 const [[heartCount]] = await pool.query(SQL.SELECT_commentheartCount, [
+    //                     variable.comment_number,
+    //                     variable.board_number,
+    //                 ]);
+    //                 req.heart = {
+    //                     commentHeart: heartCount.count,
+    //                 };
+    //                 next();
+    //             }
+    //         }
+    //     } catch (likeERR) {
+    //         return errorMsg(res, likeERR.message);
+    //     }
+    // },
 
     best: async (req, res, next) => {
         try {

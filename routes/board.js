@@ -3,7 +3,7 @@ const router = express.Router();
 const { upload } = require("../config/etc/etc_config");
 
 const { verifyToken } = require("../controllers/tokenControl");
-const { board, write, boardDetail, like, best } = require("../controllers/boardControl");
+const { board, write, boardDetail, boardHeart, best } = require("../controllers/boardControl");
 
 const myResponse = require("../utils/myResponse");
 
@@ -43,8 +43,8 @@ router.post("/detail", boardDetail, (req, res) => {
  * @method post
  * @summary LIKE
  */
-router.post("/like", like, (req, res) => {
-    res.json(myResponse(true, "like 성공", "data", req.heart));
+router.post("/heart", verifyToken, boardHeart, (req, res) => {
+    res.json(myResponse(true, "heart 성공", "data", { board_heart: req.heart }));
 });
 
 module.exports = router;
