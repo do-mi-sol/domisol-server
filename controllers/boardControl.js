@@ -79,11 +79,11 @@ module.exports = {
         }
     },
 
-    best: async (req, res, next) => {
+    board_best: async (req, res, next) => {
         try {
-            const currentPage = req.body.currentPage;
-            const limit = req.body.limit;
+            const { currentPage, limit } = req.body;
             const skip = (currentPage - 1) * limit;
+
             const [[numOfData]] = await pool.query(SQL.SELECT_countboard);
             const [boardData] = await pool.query(SQL.SELECT_bestboard, [skip, limit]);
             req.board = {
