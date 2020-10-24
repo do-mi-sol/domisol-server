@@ -17,7 +17,6 @@ module.exports = {
 
     verifyToken: async (req, res, next) => {
         const token = req.headers.authorization.split("Bearer ")[1];
-
         jwt.verify(token, SECRETKEY, (err, data) => {
             if (err) return errorMsg(res, "토큰이 유효하지 않습니다.");
             else {
