@@ -62,13 +62,19 @@ module.exports = {
     boardHeart: async (req, res, next) => {
         const { board_number } = req.body;
         const { user_id } = req.user;
-        const [board_heart] = await pool.query(SQL.SELECT_boardnumber, board_number);
+        console.log(user_id);
 
         try {
-            if (board_heart[0].user_id == user_id) return errorMsg(res, "이미 누른 하트입니다.");
+            const [data] = await pool.query(SQL.SELECT_boardheart, board_number);
+
+            const heartData = data.filter((value) => {
+                return value.user_id == user_id;
+            });
+
+            if (heartData.length != 0) return errorMsg(res, "이미 누른 하트입니다.");
             else {
                 await pool.query(SQL.INSERT_boardheart, [board_number, user_id]);
-                const [data] = await pool.query(SQL.SELECT_boardnumber, board_number);
+                const [data] = await pool.query(SQL.SELECT_boardheart, board_number);
                 req.heart = data.length;
                 next();
             }

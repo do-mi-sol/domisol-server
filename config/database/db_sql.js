@@ -41,7 +41,7 @@ const INSERT_board = `INSERT INTO board VALUES (null,?,?,?,NOW(),?,?);`;
 const SELECT_boardnumber = "SELECT * FROM board WHERE board_number = ?";
 
 // board heart
-const SELECT_boardheart = `SELECT * FROM board_heart WHERE board_number =? AND user_id = ?`;
+const SELECT_boardheart = "SELECT * FROM board_heart WHERE board_number = ?;";
 const DELETE_boardheart = `DELETE FROM board_heart WHERE board_number=? AND user_id = ?`;
 const SELECT_boardheartCount = `SELECT count(*) count FROM board_heart WHERE board_number =?`;
 const INSERT_boardheart = `INSERT INTO board_heart VALUES(null,?,?)`;
