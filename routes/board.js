@@ -44,7 +44,7 @@ router.post("/detail", boardDetail, (req, res) => {
  * @summary LIKE
  */
 router.post("/heart", verifyToken, boardHeart, (req, res) => {
-    res.json(myResponse(true, "heart 성공", "data", { board_heart_num: req.heart }));
+    res.json(myResponse(true, "heart 성공", "data", { board_heart: req.heart }));
 });
 
 module.exports = router;

@@ -14,6 +14,7 @@ router.post("/", comments, (req, res) => {
     res.status(201).json(
         myResponse(true, "comment 성공", "data", {
             comment: req.comment,
+            board_heart: req.heart,
         })
     );
 });

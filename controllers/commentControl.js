@@ -11,7 +11,9 @@ module.exports = {
 
         try {
             const [comment_data] = await pool.query(SQL.SELECT_allcomment, [board_number]);
+            const [board_heart] = await pool.query(SQL.SELECT_boardheart, board_number);
             req.comment = comment_data;
+            req.heart = board_heart.length;
             next();
         } catch (commentsERR) {
             errorMsg(res, commentsERR);

@@ -27,8 +27,6 @@ module.exports = {
     write: async (req, res, next) => {
         const { user_id } = req.user;
         const { board_title, board_box, board_filename } = req.body;
-        console.log(user_id);
-        console.log(req.body);
 
         if (board_title == "" || board_box == "" || board_filename == null) {
             return errorMsg(res, "채워지지 않은 정보가 있습니다.");
@@ -62,7 +60,6 @@ module.exports = {
     boardHeart: async (req, res, next) => {
         const { board_number } = req.body;
         const { user_id } = req.user;
-        console.log(user_id);
 
         try {
             const [data] = await pool.query(SQL.SELECT_boardheart, board_number);
