@@ -41,16 +41,16 @@ module.exports = {
         }
     },
 
-    boardDetail: async (req, res, next) => {
+    boardView: async (req, res, next) => {
         try {
             const { board_number } = req.body;
-            const [[detail]] = await pool.query(SQL.SELECT_boardnumber, board_number);
-            let views = detail.board_views;
+            const [[view]] = await pool.query(SQL.SELECT_boardnumber, board_number);
+
+            let views = view.board_views;
             views++;
             await pool.query(SQL.UPDATE_boardviews, [views, board_number]);
-            req.detail = {
-                detail,
-            };
+            req.view = views;
+
             next();
         } catch (boardDetailERR) {
             return errorMsg(res, boardDetailERR.message);
@@ -79,82 +79,6 @@ module.exports = {
             return errorMsg(res, boardLikeERR.message);
         }
     },
-
-    // like: async (req, res, next) => {
-    //     try {
-    //         const variable = req.body.variable;
-    //         if (variable.board_number && !variable.comment_number) {
-    //             const [[searchHeart]] = await pool.query(SQL.SELECT_boardheart, [
-    //                 variable.board_number,
-    //                 variable.userId,
-    //             ]);
-    //             if (searchHeart) {
-    //                 await pool.query(SQL.DELETE_boardheart, [
-    //                     variable.board_number,
-    //                     variable.userId,
-    //                 ]);
-    //                 const [[heartCount]] = await pool.query(
-    //                     SQL.SELECT_boardheartCount,
-    //                     variable.board_number
-    //                 );
-    //                 req.heart = {
-    //                     boardHeart: count.count,
-    //                 };
-    //                 next();
-    //             } else {
-    //                 await pool.query(SQL.INSERT_boardheart, [
-    //                     variable.board_number,
-    //                     variable.userId,
-    //                 ]);
-    //                 const [[heartCount]] = await pool.query(
-    //                     SQL.SELECT_boardheartCount,
-    //                     variable.board_number
-    //                 );
-    //                 req.heart = {
-    //                     boardHeart: heartCount.count,
-    //                 };
-    //                 next();
-    //             }
-    //         } else {
-    //             const [[searchHeart]] = await pool.query(SQL.SELECT_commentheart, [
-    //                 variable.comment_number,
-    //                 variable.board_number,
-    //                 variable.userId,
-    //             ]);
-    //             if (searchHeart) {
-    //                 await pool.query(SQL.DELETE_commentheart, [
-    //                     variable.comment_number,
-    //                     variable.board_number,
-    //                     variable.userId,
-    //                 ]);
-    //                 const [[heartCount]] = await pool.query(SQL.SELECT_commentheartCount, [
-    //                     variable.comment_number,
-    //                     variable.board_number,
-    //                 ]);
-    //                 req.heart = {
-    //                     commentHeart: heartCount.count,
-    //                 };
-    //                 next();
-    //             } else {
-    //                 await pool.query(SQL.INSERT_commentheart, [
-    //                     variable.comment_number,
-    //                     variable.board_number,
-    //                     variable.userId,
-    //                 ]);
-    //                 const [[heartCount]] = await pool.query(SQL.SELECT_commentheartCount, [
-    //                     variable.comment_number,
-    //                     variable.board_number,
-    //                 ]);
-    //                 req.heart = {
-    //                     commentHeart: heartCount.count,
-    //                 };
-    //                 next();
-    //             }
-    //         }
-    //     } catch (likeERR) {
-    //         return errorMsg(res, likeERR.message);
-    //     }
-    // },
 
     best: async (req, res, next) => {
         try {
