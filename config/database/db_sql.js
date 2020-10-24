@@ -13,8 +13,7 @@ const UPDATE_password = "UPDATE user SET password =? WHERE user_id = ?;";
 
 const DELETE_userid = "DELETE FROM user WHERE user_id = ?;";
 
-const SELECT_allboard =
-    "SELECT board_number, board_title, name, gender, board_date, board_views FROM board";
+const SELECT_allboard = "SELECT board_number, board_title, name, gender, board_date, board_views FROM board";
 
 //board
 // board view & numbering
@@ -69,7 +68,6 @@ FROM (
            A.board_views,
            A.user_id
     FROM board AS A INNER JOIN board_heart AS B ON (A.board_number = B.board_number)
-    WHERE A.board_date > CURDATE()
     ) AS C,(SELECT @rownum:=0) R GROUP BY board_number ORDER BY heartnum
 ) AS D ORDER BY count DESC LIMIT ?,?`;
 
