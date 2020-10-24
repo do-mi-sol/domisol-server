@@ -27,7 +27,7 @@ router.post("/Best", best, (req, res) => {
  * @method POST
  * @summary Write
  */
-router.post("/write", verifyToken, write, (req, res) => {
+router.post("/write", verifyToken, upload, write, (req, res) => {
     res.status(200).json(myResponse(true, "write"));
 });
 
