@@ -20,7 +20,7 @@ router.post("/", comments, (req, res) => {
 });
 
 /**
- * @method PUT
+ * @method POST
  * @summary comment_write
  */
 router.post("/write", verifyToken, comment_write, (req, res) => {
