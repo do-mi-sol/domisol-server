@@ -84,12 +84,9 @@ module.exports = {
         try {
             const { currentPage, limit } = req.body;
             const skip = (currentPage - 1) * limit;
-            console.log(skip);
 
             const [[numOfData]] = await pool.query(SQL.SELECT_countboard);
-            console.log(numOfData);
             const [boardData] = await pool.query(SQL.SELECT_bestboard, [skip, limit]);
-            console.log(boardData);
             req.board = {
                 boards: boardData,
                 currentPage,
