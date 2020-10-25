@@ -3,7 +3,7 @@
 </h1>
 
 <div align="center">
-  <img src="https://github.com/do-mi-sol/domisol-web-application/raw/master/src/assets/images/Logo3.png" width="350"/>
+  <img src="https://github.com/do-mi-sol/domisol-web-application/raw/master/src/assets/images/Logo3.png" width="350"/></br>
   <strong>👩‍❤️‍👨 도미솔, 도움이 미친듯이 필요한 솔로 그리고 연인들 👩‍❤️‍👨 </strong>
   <p></p>
   <p>솔로와 커플들이 썸 혹은 연인과 주고 받은 메신저를 공유하여 피드백을 얻는 웹 커뮤니티.</p>
