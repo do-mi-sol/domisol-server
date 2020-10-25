@@ -19,6 +19,12 @@
 ### <br/>
 ###
 
+## 💡 Distribute
+`domisol server` 👉🏻 https://domisolserver.herokuapp.com/
+
+### <br/>
+###
+
 ## 💡 Getting Started
 
 ### Prerequisites
@@ -34,7 +40,7 @@ v6.13.4
 ### Installation
 1. `clone` the repository,
 ```
-$ git clone "https://github.com/do-mi-sol/domisol-web-application.git"
+$ git clone "https://github.com/do-mi-sol/domisol-server.git"
 ```
 
 2. `Install` dependencies,
@@ -53,7 +59,7 @@ $ node app.js
 김희연|설한정    
 :-------:|:-------:
 `FE-developer`<br/>`BE-developer`|`BE-developer`<br/>
-project repackage<br/>|server 구축|
+userControl<br/>modifyControl<br/>commentControl<br/>아키텍처 설계<br/>project refactoring<br/>|tokenControl<br/>findControl<br/>boardControl<br/>file system 구현<br/>|
 
 ### <br/>
 ###
