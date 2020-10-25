@@ -6,6 +6,7 @@
   <strong>👩‍❤️‍👨 도미솔, 도움이 미친듯이 필요한 솔로들 👩‍❤️‍👨 </strong>
   <p></p>
   <p>솔로와 커플들이 썸 혹은 연인과 주고 받은 메신저를 공유하여 피드백을 얻는 웹 커뮤니티.</p>
+  <p>domisol server 👉🏻 https://domisolserver.herokuapp.com/</p></br>
 </div>
 
 <div align="center">
@@ -16,11 +17,6 @@
   <img src="https://img.shields.io/node/v/passport" alt="node"/>
 </div>
 
-### <br/>
-###
-
-## 💡 Distribute
-`domisol server` 👉🏻 https://domisolserver.herokuapp.com/
 
 ### <br/>
 ###
@@ -60,6 +56,13 @@ $ node app.js
 :-------:|:-------:
 `FE-developer`<br/>`BE-developer`|`BE-developer`<br/>
 userControl<br/>modifyControl<br/>commentControl<br/>아키텍처 설계<br/>project refactoring<br/>|tokenControl<br/>findControl<br/>boardControl<br/>file system 구현<br/>|
+
+### <br/>
+###
+
+## 💡 Contributing
+
+[![](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/images/0)](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/links/0)[![](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/images/1)](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/links/1)[![](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/images/2)](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/links/2)[![](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/images/3)](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/links/3)[![](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/images/4)](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/links/4)[![](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/images/5)](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/links/5)[![](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/images/6)](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/links/6)[![](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/images/7)](https://sourcerer.io/fame/HeeYeonKim98/do-mi-sol/domisol-server/links/7)
 
 ### <br/>
 ###
