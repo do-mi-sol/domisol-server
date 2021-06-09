@@ -69,23 +69,3 @@ userControl<br/>modifyControl<br/>commentControl<br/>아키텍처 설계<br/>pro
 ### <br/>
 ###
 
-## 💡 Link
-### do-mi-sol project
-
-`domisol web application` :  <https://github.com/do-mi-sol/domisol-web-application>
-
-`domisol server` : <https://github.com/do-mi-sol/domisol-server>
-
-### do-mi-sol developer
-
-`강민정` 👉🏻 <https://github.com/Minjeong-K>
-
-`고은희` 👉🏻 <https://github.com/eunhee-ko>
-
-`김희연` 👉🏻 <https://github.com/HeeYeonKim98>
-
-`설한정` 👉🏻 <https://github.com/HanJeongSeol>
-
-`이헤림` 👉🏻 <https://github.com/hye-rim-lee>
-
-`최지혜` 👉🏻 <https://github.com/jangnyer>
